@@ -1,0 +1,27 @@
+{
+  "name": "@umd/utilityheader",
+  "version": "0.0.1",
+  "description": "Utility Header element",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "repository": "umd/elements-utility-header",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc -outDir dist",
+    "lint": "eslint src/*.ts test/*.js",
+    "start": "tsc -w -outDir examples"
+  },
+  "devDependencies": {
+    "eslint": "^7.9.0",
+    "eslint-plugin-github": "^4.1.1",
+    "typescript": "^4.0.3"
+  },
+  "eslintIgnore": [
+    "dist/"
+  ]
+}
