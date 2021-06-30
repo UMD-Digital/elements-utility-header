@@ -23,7 +23,9 @@ export default class UtilityHeaderElement extends HTMLElement {
     static get observedAttributes(): string[];
     attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
     connectedCallback(): void;
-    setContainer(): void;
+    resizeEvent({ menu }: {
+        menu: HTMLDivElement;
+    }): void;
     paddingContainer({ padding }: {
         padding: string;
     }): void;
@@ -31,6 +33,6 @@ export default class UtilityHeaderElement extends HTMLElement {
         width: string;
     }): void;
     setSearch(): void;
-    setLastElementPadding(): void;
+    addMenuItems(): void;
 }
 //# sourceMappingURL=index.d.ts.map

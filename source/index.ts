@@ -10,8 +10,8 @@ const starIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="28"
 const calendarIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28"><title>Calendar</title><path d="M2 26h22V10H2v16zM8 7V2.5c0-.28-.22-.5-.5-.5h-1c-.28 0-.5.22-.5.5V7c0 .28.22.5.5.5h1c.28 0 .5-.22.5-.5zm12 0V2.5c0-.28-.22-.5-.5-.5h-1c-.28 0-.5.22-.5.5V7c0 .28.22.5.5.5h1c.28 0 .5-.22.5-.5zm6-1v20c0 1.094-.906 2-2 2H2c-1.094 0-2-.906-2-2V6c0-1.094.906-2 2-2h2V2.5C4 1.125 5.125 0 6.5 0h1C8.875 0 10 1.125 10 2.5V4h6V2.5C16 1.125 17.125 0 18.5 0h1C20.875 0 22 1.125 22 2.5V4h2c1.094 0 2 .906 2 2z"></path></svg>`;
 const mIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 35 28"><title>Gift</title><path d="M16 1.4C7.937 1.4 1.4 7.937 1.4 16S7.937 30.6 16 30.6c8.063 0 14.6-6.537 14.6-14.6S24.063 1.4 16 1.4zm3.38 22.66v-2.55h2L21 13l-4.68 8.36h-.38L11.11 13l-.27 8.55h2v2.55H6.08v-2.55H8l.45-11.5H6.42V7.5h4.54l5.16 9.19 5-9.27h4.51v2.55h-2.04l.61 11.49h2v2.55z"></path></svg>`;
 const searchIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28"><title>Search</title><path d="M18 13c0-3.86-3.14-7-7-7s-7 3.14-7 7 3.14 7 7 7 7-3.14 7-7zm8 13c0 1.094-.906 2-2 2-.53 0-1.047-.22-1.406-.594l-5.36-5.344C15.408 23.328 13.22 24 11.002 24 4.924 24 0 19.076 0 13S4.924 2 11 2s11 4.92 11 11c0 2.218-.67 4.405-1.936 6.233l5.36 5.36c.358.358.577.874.577 1.405z"></path></svg>`;
+const chevronIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 28 28"><title>Menu</title><path d="M26.297 12.625L14.703 24.203c-.39.39-1.016.39-1.406 0L1.703 12.625c-.39-.39-.39-1.03 0-1.422l2.594-2.578c.39-.39 1.016-.39 1.406 0L14 16.922l8.297-8.297c.39-.39 1.016-.39 1.406 0l2.594 2.578c.39.39.39 1.03 0 1.422z"></path></svg>`;
 
-const template = document.createElement('template');
 const Colors = {
   white: '#fff',
   offWhite: '#f1f1f1',
@@ -21,9 +21,13 @@ const Colors = {
   redDark: '#951022',
 };
 const Breakpoints = {
-  tabletMax: '1023px',
-  desktopMin: '1024px',
+  tabletMax: 1023,
+  desktopMin: 1024,
 };
+
+const MOBILE_MENU_ID = 'mobile-menu';
+
+const template = document.createElement('template');
 
 template.innerHTML = `
   <style>
@@ -36,84 +40,230 @@ template.innerHTML = `
     :host * {
       padding: 0;
       margin: 0;
+      box-sizing: border-box;
     }
 
-    a {
+    :host a {
       color: ${Colors.white} !important;
       text-decoration: none;
       text-transform: uppercase;
     }
 
-    svg {
-      fill: ${Colors.white} !important;
+    :host svg {
+      max-width: 15px;
+      transition: fill .5s;
     }
 
-    .lock {
+    @media (max-width: ${Breakpoints.tabletMax}px) {
+      :host svg {
+        fill: ${Colors.red} !important;
+      }
+    }
+
+    @media (min-width: ${Breakpoints.desktopMin}px) {
+      :host svg {
+        fill: ${Colors.white} !important;
+      }
+    }
+
+    :host button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    :host form {
+      display: flex;
+    }
+
+    @media (max-width: ${Breakpoints.tabletMax}px) {
+      :host form {
+        padding: 20px 15px;
+        order: 1;
+      }
+    }
+
+    @media (min-width: ${Breakpoints.desktopMin}px) {
+      :host form {
+        position: absolute;
+        top: 48px;
+        right: 0;
+        padding: 10px;
+        background-color: ${Colors.white};
+        min-width: 420px;
+      }
+    }
+
+    :host input[type="text"] {
+      width: calc(100% - 120px) !important;
+      display: block !important;
+      padding: 0 10px !important;
+      height: 44px !important;
+      font-family: Source Sans,Source Sans Pro,sans-serif !important;
+      font-size: 13px !important;
+      line-height: 1.3 !important;
+      border: 1px solid #ccc !important;
+    }
+
+    :host input[type="submit"] {
+      border: none;
+      background-color: ${Colors.red};
+      color: ${Colors.white};
+      font-weight: 700;
+      font-size: 12px;
+      transition: background 0.5s;
+      padding: 15px 30px;
+      min-width: 120px;
+    }
+
+    :host input[type="submit"]:hover,
+    :host input[type="submit"]:focus {
+      background-color: ${Colors.redDark};
+    }
+
+    :host .lock {
       margin: 0 auto;
       display: flex;
       align-items: center;
     }
 
-    @media (min-width: ${Breakpoints.desktopMin}) {
-      .lock {
+    @media (min-width: ${Breakpoints.desktopMin}px) {
+      :host .lock {
         min-width: 960px;
       }
     }
 
-    .menu {
-
+    :host .lock > button {
+      margin-left: auto;
     }
 
-    @media (max-width: ${Breakpoints.tabletMax}) {
-      .menu {
-        position: absolute;
-        height: 0;
+    @media (min-width: ${Breakpoints.desktopMin}px) {
+      :host .lock > button {
+        display: none;
       }
     }
 
-    @media (min-width: ${Breakpoints.desktopMin}) {
-      .menu {
+    :host .lock > button:hover,
+    :host .lock > button:focus {
+      background-color: ${Colors.redDark};
+    }
+
+    :host .menu {
+
+    }
+
+    @media (max-width: ${Breakpoints.tabletMax}px) {
+      :host .menu {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        top: 39px;
+        box-shadow: 0 0 5px 1px rgba(0, 0, 0, .2);
+        height: 0;
+        overflow: hidden;
+        transition: height 1s;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    @media (min-width: ${Breakpoints.desktopMin}px) {
+      :host .menu {
         display: flex;
         margin-left: auto;
+        height: inherit !important;
       }
     }
 
-    .menu > * {
+    :host .menu > a,
+    :host button {
       display: flex;
       align-items: center;
       padding: 10px 15px;
       background-color: transparent;
-      transition: background .5s;
     }
 
-    .menu > *:hover, 
-    .menu > *:focus {
-      background-color: ${Colors.redDark};
+    @media (max-width: ${Breakpoints.tabletMax}px) {
+      :host .menu > a {
+        border-top: 1px solid ${Colors.grayLight};
+        color: ${Colors.red} !important;
+        order: 2;
+      }
     }
 
-    .menu > * > span {
+    @media (max-width: ${Breakpoints.tabletMax}px) {
+      :host .menu > a:hover,
+      :host .menu > a:focus {
+        background-color: ${Colors.red} !important;
+        color: ${Colors.white} !important;
+        transition: background .5s, color .5s;
+      }
+
+      :host .menu > a:hover svg,
+      :host .menu > a:focus svg {
+        fill: ${Colors.white} !important;
+      }
+    }
+
+    @media (min-width: ${Breakpoints.desktopMin}px) {
+      :host .menu > *,
+      :host .lock > button {
+        transition: background .5s;
+      }
+    }
+
+    @media (min-width: ${Breakpoints.desktopMin}px) {
+      :host .menu > *:not(form):hover, 
+      :host .menu > *:not(form):focus {
+        background-color: ${Colors.redDark};
+      }
+    }
+
+    :host .menu > * > span {
       margin-left: 10px;
     }
 
-    .menu svg {
-      max-width: 15px;
-    }
-
-    .menu a {
+    :host .menu a {
       font-weight: 700;
       font-size: 13px;
       font-family: Source Sans,Source Sans Pro,sans-serif;
     }
 
-    .menu button {
-      background: transparent;
-      border: none;
+    @media (max-width: ${Breakpoints.tabletMax}px) {
+      :host .menu button {
+        display: none;
+      }
     }
 
-    .logo {
+    :host .logo {
       font-size: 14px;
       font-family: Crimson Text, Georgia, serif;
       letter-spacing: 1px;
+      padding: 10px 0;
+    }
+
+    @media (max-width: ${Breakpoints.tabletMax}px) {
+      :host .mobile-button svg {
+        fill: ${Colors.white} !important;
+        max-width: 20px;
+      }
+    }
+
+    @media (min-width: ${Breakpoints.desktopMin}px) {
+      :host .lock .mobile-button {
+        display: none;
+      }
+    }
+
+    :host sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
     }
     
   </style>
@@ -138,13 +288,89 @@ const makeLinkElement = ({
   return tag;
 };
 
-const makeSchoolsElement = () => {};
+const mobileToggle = ({ expandElement }: { expandElement: HTMLElement }) => {
+  const isOpen = expandElement.getAttribute('aria-hidden') === 'true';
+
+  if (isOpen) {
+    const elements = Array.from(
+      expandElement.querySelectorAll('a, form'),
+    ) as Array<HTMLElement>;
+
+    const size = elements.reduce((accumulator, currentValue) => {
+      return accumulator + currentValue.offsetHeight;
+    }, 0);
+
+    expandElement.setAttribute('aria-hidden', 'false');
+    expandElement.style.height = `${size}px`;
+  } else {
+    expandElement.setAttribute('aria-hidden', 'true');
+    expandElement.style.height = `0`;
+  }
+};
+
+const makeMobileMenuButton = ({
+  expandElement,
+}: {
+  expandElement: HTMLDivElement;
+}) => {
+  const button = document.createElement('button');
+
+  button.innerHTML = `${chevronIcon}`;
+  button.setAttribute('type', 'button');
+  button.setAttribute('aria-label', 'toggle mobile menu');
+  button.setAttribute('aria-controls', MOBILE_MENU_ID);
+  button.classList.add('mobile-button');
+
+  button.addEventListener('click', () => {
+    mobileToggle({ expandElement });
+  });
+
+  return button;
+};
+
+const makeLogoElement = () => {
+  const logo = document.createElement('a');
+
+  logo.innerHTML = 'University of Maryland';
+  logo.setAttribute('href', 'https://umd.edu');
+  logo.setAttribute('target', '_blank');
+  logo.setAttribute('rel', 'noopener noreferrer');
+  logo.classList.add('logo');
+
+  return logo;
+};
+
+const makeFormElement = () => {
+  const form = document.createElement('form');
+  const inputTextLabel = document.createElement('label');
+  const inputText = document.createElement('input');
+  const inputSubmit = document.createElement('input');
+
+  inputTextLabel.setAttribute('for', 'input-text');
+  inputTextLabel.classList.add('sr-only');
+
+  inputText.setAttribute('type', 'text');
+  inputText.setAttribute('id', 'input-text');
+  inputText.setAttribute('name', 'query');
+  inputText.setAttribute('placeholder', 'Search for People, places and things');
+  inputText.setAttribute('required', '');
+
+  inputSubmit.setAttribute('type', 'submit');
+  inputSubmit.value = 'Submit';
+
+  form.appendChild(inputTextLabel);
+  form.appendChild(inputText);
+
+  form.appendChild(inputSubmit);
+
+  return form;
+};
 
 export default class UtilityHeaderElement extends HTMLElement {
   _shadow: ShadowRoot;
-  _containerElement = document.createElement('div');
-  _menuContainerElement = document.createElement('div');
-  _logoElement = document.createElement('a');
+  _containerElement: HTMLDivElement;
+  _menuContainerElement: HTMLDivElement;
+  _logoElement = makeLogoElement();
 
   _menuElements = [] as Array<{ order: number; element: HTMLElement }>;
   _paddingAmount = '20';
@@ -161,7 +387,30 @@ export default class UtilityHeaderElement extends HTMLElement {
 
     this._shadow = this.attachShadow({ mode: 'open' });
     this._shadow.appendChild(template.content.cloneNode(true));
-    this.setContainer();
+
+    this._containerElement = document.createElement('div');
+    this._menuContainerElement = document.createElement('div');
+
+    const mobileButton = makeMobileMenuButton({
+      expandElement: this._menuContainerElement,
+    });
+
+    this._containerElement.classList.add('lock');
+    this._menuContainerElement.classList.add('menu');
+    this._menuContainerElement.setAttribute('id', MOBILE_MENU_ID);
+    this._menuContainerElement.setAttribute(
+      'aria-hidden',
+      (window.innerWidth < Breakpoints.desktopMin).toString(),
+    );
+
+    this._containerElement.appendChild(this._logoElement);
+    this._containerElement.appendChild(this._menuContainerElement);
+    this._containerElement.appendChild(mobileButton);
+    this._shadow.appendChild(this._containerElement);
+
+    window.addEventListener('resize', () => {
+      this.resizeEvent({ menu: this._menuContainerElement });
+    });
   }
 
   static get observedAttributes() {
@@ -272,22 +521,16 @@ export default class UtilityHeaderElement extends HTMLElement {
   }
 
   connectedCallback() {
-    this.setLastElementPadding();
+    this.addMenuItems();
   }
 
-  setContainer() {
-    this._logoElement.innerHTML = 'University of Maryland';
-    this._logoElement.setAttribute('href', 'https://umd.edu');
-    this._logoElement.setAttribute('target', '_blank');
-    this._logoElement.setAttribute('rel', 'noopener noreferrer');
-    this._logoElement.classList.add('logo');
-
-    this._containerElement.classList.add('lock');
-    this._menuContainerElement.classList.add('menu');
-
-    this._containerElement.appendChild(this._logoElement);
-    this._containerElement.appendChild(this._menuContainerElement);
-    this._shadow.appendChild(this._containerElement);
+  resizeEvent({ menu }: { menu: HTMLDivElement }) {
+    if (menu) {
+      menu.setAttribute(
+        'aria-hidden',
+        (window.innerWidth < Breakpoints.desktopMin).toString(),
+      );
+    }
   }
 
   paddingContainer({ padding }: { padding: string }) {
@@ -300,11 +543,14 @@ export default class UtilityHeaderElement extends HTMLElement {
 
   setSearch() {
     const button = document.createElement('button');
-    const formElement = document.createElement('form');
 
     button.setAttribute('aria-label', 'enable the search form');
     button.setAttribute('type', 'button');
     button.innerHTML = `${searchIcon}`;
+
+    button.addEventListener('click', () => {
+      console.log('called');
+    });
 
     this._menuElements.push({
       order: 6,
@@ -312,22 +558,33 @@ export default class UtilityHeaderElement extends HTMLElement {
     });
   }
 
-  setLastElementPadding() {
+  addMenuItems() {
+    const formElement = makeFormElement();
     const items = this._menuElements.sort((a, b) =>
       a.order > b.order ? 1 : -1,
     );
 
-    items.forEach(({ element }, i) => {
-      if (i === items.length - 1) {
-        const padding = parseInt(this._paddingAmount);
-        const elementPadding = padding > 20 ? 20 : padding;
-        element.style.paddingRight = `${elementPadding}px`;
-        if (padding > 20) {
-          this._containerElement.style.paddingRight = `${padding - 20}px`;
-        }
+    const setPadding = ({ element }: { element: HTMLElement }) => {
+      const mobileButton = this._shadow.querySelector(
+        '.mobile-button',
+      ) as HTMLButtonElement;
+      const padding = parseInt(this._paddingAmount);
+      const elementPadding = padding > 20 ? 20 : padding;
+
+      element.style.paddingRight = `${elementPadding}px`;
+      if (mobileButton) mobileButton.style.paddingRight = `${elementPadding}px`;
+
+      if (padding > 20) {
+        this._containerElement.style.paddingRight = `${padding - 20}px`;
       }
+    };
+
+    items.forEach(({ element }, i) => {
+      if (i === items.length - 1) setPadding({ element });
       this._menuContainerElement.appendChild(element);
     });
+
+    this._menuContainerElement.appendChild(formElement);
   }
 }
 
