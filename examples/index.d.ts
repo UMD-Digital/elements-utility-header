@@ -8,6 +8,7 @@ export default class UtilityHeaderElement extends HTMLElement {
     _containerElement: HTMLDivElement;
     _menuContainerElement: HTMLDivElement;
     _logoElement: HTMLAnchorElement;
+    _formElement: HTMLFormElement;
     _menuElements: {
         order: number;
         element: HTMLElement;
@@ -32,7 +33,6 @@ export default class UtilityHeaderElement extends HTMLElement {
     sizeContainer({ width }: {
         width: string;
     }): void;
-    setSearch(): void;
     addMenuItems(): void;
 }
 //# sourceMappingURL=index.d.ts.map

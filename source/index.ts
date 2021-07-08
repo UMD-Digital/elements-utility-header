@@ -26,6 +26,11 @@ const Breakpoints = {
 };
 
 const MOBILE_MENU_ID = 'mobile-menu';
+const SEARCH_FORM_ID = 'umd-global-search';
+const isDesktop = window.innerWidth >= Breakpoints.desktopMin;
+
+const ANIMATION_IN_SPEED = 800;
+const ANIMATION_OUT_SPEED = 400;
 
 const template = document.createElement('template');
 
@@ -51,12 +56,13 @@ template.innerHTML = `
 
     :host svg {
       max-width: 15px;
-      transition: fill .5s;
+      transition: fill ${ANIMATION_OUT_SPEED}ms;
     }
 
     @media (max-width: ${Breakpoints.tabletMax}px) {
       :host svg {
         fill: ${Colors.red} !important;
+        transition: fill ${ANIMATION_IN_SPEED}ms;
       }
     }
 
@@ -72,10 +78,6 @@ template.innerHTML = `
       cursor: pointer;
     }
 
-    :host form {
-      display: flex;
-    }
-
     @media (max-width: ${Breakpoints.tabletMax}px) {
       :host form {
         padding: 20px 15px;
@@ -88,9 +90,29 @@ template.innerHTML = `
         position: absolute;
         top: 48px;
         right: 0;
-        padding: 10px;
         background-color: ${Colors.white};
         min-width: 420px;
+        height: 0;
+        overflow: hidden;
+        transition: height ${ANIMATION_OUT_SPEED}ms;
+      }
+
+      :host form[aria-hidden="true"] {
+        transition: height ${ANIMATION_OUT_SPEED}ms;
+      }
+
+      :host form[aria-hidden="false"] {
+        transition: height ${ANIMATION_IN_SPEED}ms;
+      }
+    }
+
+    :host form > div {
+      display: flex;
+    }
+
+    @media (min-width: ${Breakpoints.desktopMin}px) {
+      :host form > div {
+        padding: 10px;
       }
     }
 
@@ -111,7 +133,7 @@ template.innerHTML = `
       color: ${Colors.white};
       font-weight: 700;
       font-size: 12px;
-      transition: background 0.5s;
+      transition: background ${ANIMATION_OUT_SPEED}ms;
       padding: 15px 30px;
       min-width: 120px;
     }
@@ -119,6 +141,7 @@ template.innerHTML = `
     :host input[type="submit"]:hover,
     :host input[type="submit"]:focus {
       background-color: ${Colors.redDark};
+      transition: background ${ANIMATION_IN_SPEED}ms;
     }
 
     :host .lock {
@@ -133,23 +156,19 @@ template.innerHTML = `
       }
     }
 
-    :host .lock > button {
+    :host .mobile-button {
       margin-left: auto;
     }
 
     @media (min-width: ${Breakpoints.desktopMin}px) {
-      :host .lock > button {
+      :host  .mobile-button  {
         display: none;
       }
     }
 
-    :host .lock > button:hover,
-    :host .lock > button:focus {
+    :host .mobile-button:hover,
+    :host .mobile-button:focus {
       background-color: ${Colors.redDark};
-    }
-
-    :host .menu {
-
     }
 
     @media (max-width: ${Breakpoints.tabletMax}px) {
@@ -158,12 +177,21 @@ template.innerHTML = `
         width: 100%;
         left: 0;
         top: 39px;
-        box-shadow: 0 0 5px 1px rgba(0, 0, 0, .2);
+        box-shadow: 0 5px 5px 1px rgba(0, 0, 0, .2);
         height: 0;
         overflow: hidden;
-        transition: height 1s;
+        transition: height ${ANIMATION_OUT_SPEED}ms;
         display: flex;
         flex-direction: column;
+      }
+
+      :host .menu[aria-hidden="true"] {
+        transition: height ${ANIMATION_OUT_SPEED}ms;
+        display: none;
+      }
+
+      :host .menu[aria-hidden="false"] {
+        transition: height ${ANIMATION_IN_SPEED}ms;
       }
     }
 
@@ -172,6 +200,7 @@ template.innerHTML = `
         display: flex;
         margin-left: auto;
         height: inherit !important;
+        display: flex !important;
       }
     }
 
@@ -188,6 +217,11 @@ template.innerHTML = `
         border-top: 1px solid ${Colors.grayLight};
         color: ${Colors.red} !important;
         order: 2;
+        transition: background ${ANIMATION_OUT_SPEED}ms, color ${ANIMATION_OUT_SPEED}ms;
+      }
+
+      :host .menu > a:first-of-type {
+        border-top: none;
       }
     }
 
@@ -196,7 +230,7 @@ template.innerHTML = `
       :host .menu > a:focus {
         background-color: ${Colors.red} !important;
         color: ${Colors.white} !important;
-        transition: background .5s, color .5s;
+        transition: background ${ANIMATION_IN_SPEED}ms, color ${ANIMATION_IN_SPEED}ms;
       }
 
       :host .menu > a:hover svg,
@@ -208,7 +242,7 @@ template.innerHTML = `
     @media (min-width: ${Breakpoints.desktopMin}px) {
       :host .menu > *,
       :host .lock > button {
-        transition: background .5s;
+        transition: background ${ANIMATION_OUT_SPEED}ms;
       }
     }
 
@@ -216,6 +250,7 @@ template.innerHTML = `
       :host .menu > *:not(form):hover, 
       :host .menu > *:not(form):focus {
         background-color: ${Colors.redDark};
+        transition: background ${ANIMATION_IN_SPEED}ms;
       }
     }
 
@@ -288,24 +323,80 @@ const makeLinkElement = ({
   return tag;
 };
 
-const mobileToggle = ({ expandElement }: { expandElement: HTMLElement }) => {
-  const isOpen = expandElement.getAttribute('aria-hidden') === 'true';
+const toggleExpandElements = ({
+  expandElement,
+  elements,
+}: {
+  expandElement: HTMLElement;
+  elements: Array<HTMLElement>;
+}) => {
+  const isOpen = expandElement.getAttribute('aria-hidden') === 'false';
 
-  if (isOpen) {
-    const elements = Array.from(
-      expandElement.querySelectorAll('a, form'),
-    ) as Array<HTMLElement>;
+  const eventKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Esc' || event.keyCode == 27) {
+      close();
+    }
+  };
 
-    const size = elements.reduce((accumulator, currentValue) => {
-      return accumulator + currentValue.offsetHeight;
-    }, 0);
+  const eventKeyUp = (event: KeyboardEvent) => {
+    const path = event.composedPath();
+    const currentElement = path[0] as HTMLElement;
 
-    expandElement.setAttribute('aria-hidden', 'false');
-    expandElement.style.height = `${size}px`;
-  } else {
-    expandElement.setAttribute('aria-hidden', 'true');
+    if (!expandElement) return;
+
+    if (event.key === 'Tab' || event.keyCode == 9) {
+      if (!expandElement.contains(currentElement)) {
+        close();
+      }
+    }
+
+    if (event.key === 'ArrowDown' || event.keyCode == 40) {
+      const nextElement = currentElement.nextElementSibling as HTMLElement;
+
+      if (expandElement.contains(nextElement)) {
+        nextElement.focus();
+      }
+    }
+
+    if (event.key === 'ArrowUp' || event.keyCode == 38) {
+      const previousElement = currentElement.previousElementSibling as HTMLElement;
+
+      if (expandElement.contains(previousElement)) {
+        previousElement.focus();
+      }
+    }
+  };
+
+  const open = () => {
+    expandElement.style.display = 'block';
+
+    setTimeout(() => {
+      const size = elements.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue.offsetHeight;
+      }, 0);
+      expandElement.setAttribute('aria-hidden', 'false');
+      expandElement.style.height = `${size}px`;
+
+      elements[0].focus();
+
+      window.addEventListener('keydown', eventKeyDown);
+      window.addEventListener('keyup', eventKeyUp);
+    }, 100);
+  };
+
+  const close = () => {
     expandElement.style.height = `0`;
-  }
+
+    setTimeout(() => {
+      expandElement.style.display = 'none';
+      expandElement.setAttribute('aria-hidden', 'true');
+
+      window.removeEventListener('keydown', eventKeyDown);
+      window.removeEventListener('keyup', eventKeyUp);
+    }, ANIMATION_OUT_SPEED + 100);
+  };
+
+  isOpen ? close() : open();
 };
 
 const makeMobileMenuButton = ({
@@ -314,6 +405,9 @@ const makeMobileMenuButton = ({
   expandElement: HTMLDivElement;
 }) => {
   const button = document.createElement('button');
+  const elements = Array.from(
+    expandElement.querySelectorAll('a, form'),
+  ) as Array<HTMLElement>;
 
   button.innerHTML = `${chevronIcon}`;
   button.setAttribute('type', 'button');
@@ -322,7 +416,27 @@ const makeMobileMenuButton = ({
   button.classList.add('mobile-button');
 
   button.addEventListener('click', () => {
-    mobileToggle({ expandElement });
+    toggleExpandElements({ expandElement, elements });
+  });
+
+  return button;
+};
+
+const makeSearchFormButton = ({
+  expandElement,
+}: {
+  expandElement: HTMLDivElement | HTMLFormElement;
+}) => {
+  const button = document.createElement('button');
+  const elements = Array.from(expandElement.querySelectorAll('div'));
+
+  button.setAttribute('aria-label', 'enable the search form');
+  button.setAttribute('type', 'button');
+  button.innerHTML = `${searchIcon}`;
+  button.setAttribute('aria-controls', SEARCH_FORM_ID);
+
+  button.addEventListener('click', () => {
+    toggleExpandElements({ expandElement, elements });
   });
 
   return button;
@@ -342,6 +456,7 @@ const makeLogoElement = () => {
 
 const makeFormElement = () => {
   const form = document.createElement('form');
+  const wrapper = document.createElement('div');
   const inputTextLabel = document.createElement('label');
   const inputText = document.createElement('input');
   const inputSubmit = document.createElement('input');
@@ -358,19 +473,24 @@ const makeFormElement = () => {
   inputSubmit.setAttribute('type', 'submit');
   inputSubmit.value = 'Submit';
 
-  form.appendChild(inputTextLabel);
-  form.appendChild(inputText);
+  form.setAttribute('id', SEARCH_FORM_ID);
+  form.setAttribute('aria-hidden', isDesktop.toString());
 
-  form.appendChild(inputSubmit);
+  wrapper.appendChild(inputTextLabel);
+  wrapper.appendChild(inputText);
 
+  wrapper.appendChild(inputSubmit);
+
+  form.appendChild(wrapper);
   return form;
 };
 
 export default class UtilityHeaderElement extends HTMLElement {
   _shadow: ShadowRoot;
-  _containerElement: HTMLDivElement;
-  _menuContainerElement: HTMLDivElement;
+  _containerElement = document.createElement('div');
+  _menuContainerElement = document.createElement('div');
   _logoElement = makeLogoElement();
+  _formElement = makeFormElement();
 
   _menuElements = [] as Array<{ order: number; element: HTMLElement }>;
   _paddingAmount = '20';
@@ -387,30 +507,6 @@ export default class UtilityHeaderElement extends HTMLElement {
 
     this._shadow = this.attachShadow({ mode: 'open' });
     this._shadow.appendChild(template.content.cloneNode(true));
-
-    this._containerElement = document.createElement('div');
-    this._menuContainerElement = document.createElement('div');
-
-    const mobileButton = makeMobileMenuButton({
-      expandElement: this._menuContainerElement,
-    });
-
-    this._containerElement.classList.add('lock');
-    this._menuContainerElement.classList.add('menu');
-    this._menuContainerElement.setAttribute('id', MOBILE_MENU_ID);
-    this._menuContainerElement.setAttribute(
-      'aria-hidden',
-      (window.innerWidth < Breakpoints.desktopMin).toString(),
-    );
-
-    this._containerElement.appendChild(this._logoElement);
-    this._containerElement.appendChild(this._menuContainerElement);
-    this._containerElement.appendChild(mobileButton);
-    this._shadow.appendChild(this._containerElement);
-
-    window.addEventListener('resize', () => {
-      this.resizeEvent({ menu: this._menuContainerElement });
-    });
   }
 
   static get observedAttributes() {
@@ -515,21 +611,46 @@ export default class UtilityHeaderElement extends HTMLElement {
     }
 
     if (name === 'search' && !this._isSearchSet) {
+      const button = makeSearchFormButton({
+        expandElement: this._formElement,
+      });
       this._isSearchSet = true;
-      this.setSearch();
+
+      this._menuElements.push({
+        order: 6,
+        element: button,
+      });
     }
   }
 
   connectedCallback() {
     this.addMenuItems();
+
+    const mobileButton = makeMobileMenuButton({
+      expandElement: this._menuContainerElement,
+    });
+
+    this._containerElement.classList.add('lock');
+    this._menuContainerElement.classList.add('menu');
+    this._menuContainerElement.setAttribute('id', MOBILE_MENU_ID);
+    this._menuContainerElement.setAttribute(
+      'aria-hidden',
+      (!isDesktop).toString(),
+    );
+
+    this._containerElement.appendChild(this._logoElement);
+    this._containerElement.appendChild(this._menuContainerElement);
+    this._containerElement.appendChild(mobileButton);
+    this._shadow.appendChild(this._containerElement);
+
+    window.addEventListener('resize', () => {
+      this.resizeEvent({ menu: this._menuContainerElement });
+    });
   }
 
   resizeEvent({ menu }: { menu: HTMLDivElement }) {
     if (menu) {
-      menu.setAttribute(
-        'aria-hidden',
-        (window.innerWidth < Breakpoints.desktopMin).toString(),
-      );
+      menu.setAttribute('aria-hidden', (!isDesktop).toString());
     }
   }
 
@@ -541,25 +662,7 @@ export default class UtilityHeaderElement extends HTMLElement {
     this._containerElement.style.maxWidth = `${width}px`;
   }
 
-  setSearch() {
-    const button = document.createElement('button');
-
-    button.setAttribute('aria-label', 'enable the search form');
-    button.setAttribute('type', 'button');
-    button.innerHTML = `${searchIcon}`;
-
-    button.addEventListener('click', () => {
-      console.log('called');
-    });
-
-    this._menuElements.push({
-      order: 6,
-      element: button,
-    });
-  }
-
   addMenuItems() {
-    const formElement = makeFormElement();
     const items = this._menuElements.sort((a, b) =>
       a.order > b.order ? 1 : -1,
     );
@@ -584,7 +687,9 @@ export default class UtilityHeaderElement extends HTMLElement {
       this._menuContainerElement.appendChild(element);
     });
 
-    this._menuContainerElement.appendChild(formElement);
+    if (this._isSearchSet) {
+      this._menuContainerElement.appendChild(this._formElement);
+    }
   }
 }
 
