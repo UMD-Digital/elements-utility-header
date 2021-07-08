@@ -25,6 +25,7 @@ const Breakpoints = {
   desktopMin: 1024,
 };
 
+const SEARCH_URL = 'https://search.umd.edu';
 const MOBILE_MENU_ID = 'mobile-menu';
 const SEARCH_FORM_ID = 'umd-global-search';
 const isDesktop = window.innerWidth >= Breakpoints.desktopMin;
@@ -494,6 +495,7 @@ export default class UtilityHeaderElement extends HTMLElement {
 
   _menuElements = [] as Array<{ order: number; element: HTMLElement }>;
   _paddingAmount = '20';
+  _searchType = null as string | null;
 
   _isSearchSet = false;
   _isEventsSet = false;
@@ -616,6 +618,10 @@ export default class UtilityHeaderElement extends HTMLElement {
       });
       this._isSearchSet = true;
 
+      if (newValue) {
+        this._searchType = newValue;
+      }
+
       this._menuElements.push({
         order: 6,
         element: button,
@@ -643,6 +649,8 @@ export default class UtilityHeaderElement extends HTMLElement {
     this._containerElement.appendChild(mobileButton);
     this._shadow.appendChild(this._containerElement);
 
+    this.searchSubmit();
+
     window.addEventListener('resize', () => {
       this.resizeEvent({ menu: this._menuContainerElement });
     });
@@ -660,6 +668,28 @@ export default class UtilityHeaderElement extends HTMLElement {
 
   sizeContainer({ width }: { width: string }) {
     this._containerElement.style.maxWidth = `${width}px`;
+  }
+
+  searchSubmit() {
+    this._formElement.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const input = this._formElement.querySelector(
+        'input[type="text"]',
+      ) as HTMLInputElement;
+
+      let searchString = `#gsc.tab=0&gsc`;
+
+      if (this._searchType === 'domain') {
+        searchString += `.q=site:${window.location.hostname} ${input.value}`;
+      } else {
+        searchString += `.q=${input.value}`;
+      }
+
+      searchString += `&gsc.sort=`;
+
+      window.open(`${SEARCH_URL}${encodeURI(searchString)}`, '_blank');
+    });
   }
 
   addMenuItems() {

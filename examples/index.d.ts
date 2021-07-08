@@ -14,6 +14,7 @@ export default class UtilityHeaderElement extends HTMLElement {
         element: HTMLElement;
     }[];
     _paddingAmount: string;
+    _searchType: string | null;
     _isSearchSet: boolean;
     _isEventsSet: boolean;
     _isNewsSet: boolean;
@@ -33,6 +34,7 @@ export default class UtilityHeaderElement extends HTMLElement {
     sizeContainer({ width }: {
         width: string;
     }): void;
+    searchSubmit(): void;
     addMenuItems(): void;
 }
 //# sourceMappingURL=index.d.ts.map

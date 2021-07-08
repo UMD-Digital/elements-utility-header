@@ -17,6 +17,7 @@ const Breakpoints = {
     tabletMax: 1023,
     desktopMin: 1024,
 };
+const SEARCH_URL = 'https://search.umd.edu';
 const MOBILE_MENU_ID = 'mobile-menu';
 const SEARCH_FORM_ID = 'umd-global-search';
 const isDesktop = window.innerWidth >= Breakpoints.desktopMin;
@@ -420,6 +421,7 @@ export default class UtilityHeaderElement extends HTMLElement {
         this._formElement = makeFormElement();
         this._menuElements = [];
         this._paddingAmount = '20';
+        this._searchType = null;
         this._isSearchSet = false;
         this._isEventsSet = false;
         this._isNewsSet = false;
@@ -515,6 +517,9 @@ export default class UtilityHeaderElement extends HTMLElement {
                 expandElement: this._formElement,
             });
             this._isSearchSet = true;
+            if (newValue) {
+                this._searchType = newValue;
+            }
             this._menuElements.push({
                 order: 6,
                 element: button,
@@ -534,6 +539,7 @@ export default class UtilityHeaderElement extends HTMLElement {
         this._containerElement.appendChild(this._menuContainerElement);
         this._containerElement.appendChild(mobileButton);
         this._shadow.appendChild(this._containerElement);
+        this.searchSubmit();
         window.addEventListener('resize', () => {
             this.resizeEvent({ menu: this._menuContainerElement });
         });
@@ -548,6 +554,21 @@ export default class UtilityHeaderElement extends HTMLElement {
     }
     sizeContainer({ width }) {
         this._containerElement.style.maxWidth = `${width}px`;
+    }
+    searchSubmit() {
+        this._formElement.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const input = this._formElement.querySelector('input[type="text"]');
+            let searchString = `#gsc.tab=0&gsc`;
+            if (this._searchType === 'domain') {
+                searchString += `.q=site:${window.location.hostname} ${input.value}`;
+            }
+            else {
+                searchString += `.q=${input.value}`;
+            }
+            searchString += `&gsc.sort=`;
+            window.open(`${SEARCH_URL}${encodeURI(searchString)}`, '_blank');
+        });
     }
     addMenuItems() {
         const items = this._menuElements.sort((a, b) => a.order > b.order ? 1 : -1);
