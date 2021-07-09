@@ -4,6 +4,13 @@ declare global {
   }
 }
 
+type AlertDataType = {
+  alert_title: string;
+  alert_message: string;
+  alert_type: string;
+  alert_id: string;
+};
+
 const flagIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="29" height="28" viewBox="0 0 29 28"><title>Flag</title><path d="M5 4c0 .72-.39 1.36-1 1.72V25.5c0 .266-.234.5-.5.5h-1c-.266 0-.5-.234-.5-.5V5.72c-.61-.36-1-1-1-1.72 0-1.11.89-2 2-2s2 .89 2 2zm23 1v11.922c0 .578-.36.797-.812 1.03-1.766.954-3.72 1.814-5.766 1.814-2.875 0-4.25-2.188-7.656-2.188-2.484 0-5.094 1.125-7.25 2.28-.172.095-.328.142-.516.142-.547 0-1-.453-1-1V7.406c0-.375.187-.64.484-.86.375-.25.828-.468 1.234-.67 1.97-1 4.36-1.876 6.578-1.876 2.453 0 4.375.812 6.547 1.828.438.22.89.297 1.375.297C23.67 6.125 26.312 4 26.998 4c.548 0 1 .453 1 1z"></path></svg>`;
 const homeIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28"><title>School</title><path d="M22 15.5V23c0 .547-.453 1-1 1h-6v-6h-4v6H5c-.547 0-1-.453-1-1v-7.5c0-.03.016-.063.016-.094L13 8l8.984 7.406c.016.03.016.063.016.094zm3.484-1.078l-.97 1.156c-.077.094-.202.156-.327.172h-.047c-.125 0-.234-.03-.328-.11L13 6.626 2.185 15.64c-.11.08-.234.126-.375.11-.124-.016-.25-.078-.327-.172l-.97-1.156c-.17-.203-.14-.53.064-.703L11.81 4.36c.657-.547 1.72-.547 2.376 0L18 7.547V4.5c0-.28.218-.5.5-.5h3c.28 0 .5.22.5.5v6.375l3.42 2.844c.204.17.235.5.064.702z"></path></svg>`;
 const starIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28"><title>Star</title><path d="M26 10.11c0 .28-.203.546-.406.75l-5.672 5.53 1.344 7.812c.016.11.016.203.016.313 0 .406-.187.78-.64.78-.22 0-.44-.077-.626-.186L13 21.42 5.984 25.11c-.203.108-.406.186-.625.186-.454 0-.657-.375-.657-.78 0-.11.016-.204.03-.314L6.08 16.39.39 10.86c-.187-.204-.39-.47-.39-.75 0-.47.483-.657.874-.72l7.844-1.14 3.516-7.11c.14-.297.406-.64.766-.64s.625.343.766.64l3.516 7.11 7.844 1.14c.375.063.875.25.875.72z"></path></svg>`;
@@ -16,22 +23,33 @@ const Colors = {
   white: '#fff',
   offWhite: '#f1f1f1',
   grayLight: '#e6e6e6',
+  gray: '#222',
   grayDark: '#454545',
   red: '#e21833',
   redDark: '#951022',
+  yellow: '#FFD200',
+  green: '#70ebd6',
 };
 const Breakpoints = {
+  largeMobileMax: 767,
   tabletMax: 1023,
   desktopMin: 1024,
 };
 
+const ELEMENT_NAME = 'umd-utility-header';
+// const ALERTS_URL = 'https://umd.edu/api/alerts';
+const ALERTS_URL = 'https://umd.it-dev-lamp.aws.umd.edu/api/alerts';
+
 const SEARCH_URL = 'https://search.umd.edu';
 const MOBILE_MENU_ID = 'mobile-menu';
 const SEARCH_FORM_ID = 'umd-global-search';
-const isDesktop = window.innerWidth >= Breakpoints.desktopMin;
-
+const ALERT_TIME_REF = 'umd-alert-time';
+const ALERT_REF = 'umd-alert';
+const ALERT_ID_REF = 'umd-alert-id';
 const ANIMATION_IN_SPEED = 800;
 const ANIMATION_OUT_SPEED = 400;
+
+const isDesktop = () => window.innerWidth >= Breakpoints.desktopMin;
 
 const template = document.createElement('template');
 
@@ -41,12 +59,19 @@ template.innerHTML = `
     :host {
       display: block;
       background-color: ${Colors.red};
+      position: relative;
+      z-index: 999;
     }
 
     :host * {
       padding: 0;
       margin: 0;
       box-sizing: border-box;
+    }
+
+    :host p {
+      max-width: 800px;
+      margin: 0 auto;
     }
 
     :host a {
@@ -81,21 +106,23 @@ template.innerHTML = `
 
     @media (max-width: ${Breakpoints.tabletMax}px) {
       :host form {
-        padding: 20px 15px;
-        order: 1;
+        padding: 20px 15px !important;
+        order: 1 !important;
+        display: block !important;
       }
     }
 
     @media (min-width: ${Breakpoints.desktopMin}px) {
       :host form {
-        position: absolute;
-        top: 48px;
-        right: 0;
-        background-color: ${Colors.white};
-        min-width: 420px;
+        position: absolute !important;
+        top: 48px !important;
+        right: 0 !important;
+        background-color: ${Colors.white} !important;
+        min-width: 420px !important;
         height: 0;
-        overflow: hidden;
-        transition: height ${ANIMATION_OUT_SPEED}ms;
+        overflow: hidden !important;
+        transition: height ${ANIMATION_OUT_SPEED}ms !important;
+        justify-content: flex-end !important;
       }
 
       :host form[aria-hidden="true"] {
@@ -129,31 +156,44 @@ template.innerHTML = `
     }
 
     :host input[type="submit"] {
-      border: none;
-      background-color: ${Colors.red};
-      color: ${Colors.white};
-      font-weight: 700;
-      font-size: 12px;
-      transition: background ${ANIMATION_OUT_SPEED}ms;
-      padding: 15px 30px;
-      min-width: 120px;
+      border: none !important;
+      background-color: ${Colors.red} !important;
+      color: ${Colors.white} !important;
+      font-weight: 700 !important;
+      font-size: 12px !important;
+      transition: background ${ANIMATION_OUT_SPEED}ms !important;
+      padding: 15px 30px !important;
+      min-width: 120px !important;
+      height: 44px !important;
     }
 
     :host input[type="submit"]:hover,
     :host input[type="submit"]:focus {
-      background-color: ${Colors.redDark};
+      background-color: ${Colors.redDark} !important;
       transition: background ${ANIMATION_IN_SPEED}ms;
     }
 
+    :host .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
     :host .lock {
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
+      margin: 0 auto !important;
+      display: flex !important;
+      align-items: center !important;
+      position: relative !important;
     }
 
     @media (min-width: ${Breakpoints.desktopMin}px) {
       :host .lock {
-        min-width: 960px;
+        min-width: 960px !important;
       }
     }
 
@@ -162,55 +202,57 @@ template.innerHTML = `
     }
 
     @media (min-width: ${Breakpoints.desktopMin}px) {
-      :host  .mobile-button  {
-        display: none;
+      :host .mobile-button  {
+        display: none !important;
       }
     }
 
     :host .mobile-button:hover,
     :host .mobile-button:focus {
-      background-color: ${Colors.redDark};
+      background-color: ${Colors.redDark} !important;
     }
 
     @media (max-width: ${Breakpoints.tabletMax}px) {
       :host .menu {
-        position: absolute;
-        width: 100%;
-        left: 0;
-        top: 39px;
-        box-shadow: 0 5px 5px 1px rgba(0, 0, 0, .2);
+        position: absolute !important;
+        width: 100% !important;
+        left: 0 !important;
+        top: 39px !important;
+        box-shadow: 0 5px 5px 1px rgba(0, 0, 0, .2) !important;
         height: 0;
-        overflow: hidden;
-        transition: height ${ANIMATION_OUT_SPEED}ms;
+        overflow: hidden !important;
+        transition: height ${ANIMATION_OUT_SPEED}ms !important;
         display: flex;
-        flex-direction: column;
+        flex-direction: column !important;
+        background-color: ${Colors.white};
       }
 
       :host .menu[aria-hidden="true"] {
-        transition: height ${ANIMATION_OUT_SPEED}ms;
+        transition: height ${ANIMATION_OUT_SPEED}ms !important;
         display: none;
       }
 
       :host .menu[aria-hidden="false"] {
-        transition: height ${ANIMATION_IN_SPEED}ms;
+        transition: height ${ANIMATION_IN_SPEED}ms !important;
       }
     }
 
     @media (min-width: ${Breakpoints.desktopMin}px) {
       :host .menu {
-        display: flex;
-        margin-left: auto;
+        display: flex !important;
+        margin-left: auto !important;
         height: inherit !important;
         display: flex !important;
+        position: relative !important;
       }
     }
 
     :host .menu > a,
     :host button {
-      display: flex;
-      align-items: center;
-      padding: 10px 15px;
-      background-color: transparent;
+      display: flex !important;
+      align-items: center !important;
+      padding: 10px 15px !important;
+      background-color: transparent !important;
     }
 
     @media (max-width: ${Breakpoints.tabletMax}px) {
@@ -250,7 +292,7 @@ template.innerHTML = `
     @media (min-width: ${Breakpoints.desktopMin}px) {
       :host .menu > *:not(form):hover, 
       :host .menu > *:not(form):focus {
-        background-color: ${Colors.redDark};
+        background-color: ${Colors.redDark} !important;
         transition: background ${ANIMATION_IN_SPEED}ms;
       }
     }
@@ -267,7 +309,7 @@ template.innerHTML = `
 
     @media (max-width: ${Breakpoints.tabletMax}px) {
       :host .menu button {
-        display: none;
+        display: none !important;
       }
     }
 
@@ -291,17 +333,82 @@ template.innerHTML = `
       }
     }
 
-    :host sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
+    :host #umd-alert {
+      text-align: center !important;
+      background-color: ${Colors.grayLight} !important;
+      transition: height ${ANIMATION_IN_SPEED}ms;
       overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      border: 0;
+      position: relative;
     }
-    
+
+    :host #umd-alert[data-type="general"] {
+      background-color: ${Colors.grayLight} !important;
+    }
+
+    :host #umd-alert[data-type="open"] {
+      background-color: ${Colors.yellow}!important;
+    }
+
+    :host #umd-alert[data-type="closed"] {
+      background-color:  ${Colors.green} !important;
+    }
+
+    :host #umd-alert a {
+      text-transform: uppercase;
+      color: currentColor !important;
+      text-transform: inherit !important;
+      text-decoration: underline;
+    }
+
+    :host #umd-alert .lock {
+      display: block !important;
+      padding: 10px !important;
+    }
+
+    @media (max-width: ${Breakpoints.largeMobileMax}px) {
+      :host #umd-alert .lock {
+        padding-top: 40px !important;
+      }
+    }
+
+    :host #umd-alert .alert-title {
+      text-transform: uppercase;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+
+    :host #umd-alert button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    @media (max-width: ${Breakpoints.largeMobileMax}px) {
+      :host #umd-alert button {
+        top: 5px;
+        right: 5px;
+      }
+    }
+
+    :host #umd-alert button:before,
+    :host #umd-alert button:after {
+      content: '' !important;
+      display: inline-block !important;
+      width: 2px !important;
+      height: 20px !important;
+      background-color: ${Colors.gray} !important;
+    }
+
+    :host #umd-alert button:before {
+      transform: rotate(135deg) translateX(-1px) !important;
+    }
+
+    :host #umd-alert button:after {
+        transform: rotate(45deg) translateX(-1px) !important;
+    }
+
+  }
+
   </style>
 `;
 
@@ -327,15 +434,34 @@ const makeLinkElement = ({
 const toggleExpandElements = ({
   expandElement,
   elements,
+  button,
 }: {
   expandElement: HTMLElement;
   elements: Array<HTMLElement>;
+  button: HTMLButtonElement;
 }) => {
   const isOpen = expandElement.getAttribute('aria-hidden') === 'false';
 
+  const elementToFocus = () => {
+    const formElement = elements.find(
+      (element: HTMLElement) => element.nodeName === 'DIV',
+    ) as HTMLFormElement;
+    const isFirstNodeAnchor = elements[0].nodeName === 'A';
+
+    if (!formElement) return elements[0];
+
+    if (!isFirstNodeAnchor && formElement) {
+      const input = formElement.querySelector('input') as HTMLInputElement;
+
+      return input;
+    }
+
+    return elements[0];
+  };
+
   const eventKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'Esc' || event.keyCode == 27) {
-      close();
+      close(true);
     }
   };
 
@@ -368,32 +494,48 @@ const toggleExpandElements = ({
     }
   };
 
+  const eventClick = (event: MouseEvent) => {
+    const globalHeaderElement = event.target as HTMLElement;
+
+    if (globalHeaderElement.nodeName !== ELEMENT_NAME.toUpperCase()) {
+      close();
+    }
+  };
+
   const open = () => {
-    expandElement.style.display = 'block';
+    const focusElement = elementToFocus();
+    expandElement.style.display =
+      expandElement.nodeName === 'FORM' ? 'block' : 'flex';
 
     setTimeout(() => {
       const size = elements.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.offsetHeight;
       }, 0);
+
       expandElement.setAttribute('aria-hidden', 'false');
       expandElement.style.height = `${size}px`;
-
-      elements[0].focus();
+      focusElement.focus();
 
       window.addEventListener('keydown', eventKeyDown);
       window.addEventListener('keyup', eventKeyUp);
+      window.addEventListener('click', eventClick);
     }, 100);
   };
 
-  const close = () => {
+  const close = (focus = false) => {
     expandElement.style.height = `0`;
 
     setTimeout(() => {
       expandElement.style.display = 'none';
       expandElement.setAttribute('aria-hidden', 'true');
 
+      if (focus) {
+        button.focus();
+      }
+
       window.removeEventListener('keydown', eventKeyDown);
       window.removeEventListener('keyup', eventKeyUp);
+      window.removeEventListener('click', eventClick);
     }, ANIMATION_OUT_SPEED + 100);
   };
 
@@ -417,7 +559,7 @@ const makeMobileMenuButton = ({
   button.classList.add('mobile-button');
 
   button.addEventListener('click', () => {
-    toggleExpandElements({ expandElement, elements });
+    toggleExpandElements({ expandElement, elements, button });
   });
 
   return button;
@@ -437,7 +579,7 @@ const makeSearchFormButton = ({
   button.setAttribute('aria-controls', SEARCH_FORM_ID);
 
   button.addEventListener('click', () => {
-    toggleExpandElements({ expandElement, elements });
+    toggleExpandElements({ expandElement, elements, button });
   });
 
   return button;
@@ -475,7 +617,7 @@ const makeFormElement = () => {
   inputSubmit.value = 'Submit';
 
   form.setAttribute('id', SEARCH_FORM_ID);
-  form.setAttribute('aria-hidden', isDesktop.toString());
+  form.setAttribute('aria-hidden', isDesktop().toString());
 
   wrapper.appendChild(inputTextLabel);
   wrapper.appendChild(inputText);
@@ -484,6 +626,79 @@ const makeFormElement = () => {
 
   form.appendChild(wrapper);
   return form;
+};
+
+const checkAlertTime = () => {
+  const alertDate = window.localStorage.getItem(ALERT_TIME_REF);
+  const currentDate = new Date();
+  const futureDate = new Date(currentDate.getTime() + 1000 * 60);
+
+  const shouldCheckMessage = (alertDate: string) => {
+    const storedDate = new Date(Date.parse(alertDate));
+
+    if (storedDate instanceof Date && currentDate > storedDate) {
+      localStorage.setItem(ALERT_TIME_REF, futureDate.toString());
+      return true;
+    }
+
+    return false;
+  };
+
+  if (!alertDate) {
+    localStorage.setItem(ALERT_TIME_REF, futureDate.toString());
+    return true;
+  }
+
+  return shouldCheckMessage(alertDate);
+};
+
+const setAlertStorage = (alert: AlertDataType) => {
+  window.localStorage.setItem(ALERT_REF, JSON.stringify(alert));
+};
+
+const getAlertStorage = () => window.localStorage.getItem(ALERT_REF);
+
+const shouldAlertHide = ({ alert_id }: { alert_id: string }) =>
+  window.localStorage.getItem(ALERT_ID_REF) === alert_id;
+
+const makeAlert = (data: AlertDataType) => {
+  const wrapper = document.createElement('div');
+  const lock = document.createElement('div');
+  const titleElement = document.createElement('p');
+  const textElement = document.createElement('div');
+  const button = document.createElement('button');
+
+  wrapper.setAttribute('data-type', data.alert_type);
+  wrapper.setAttribute('id', 'umd-alert');
+
+  lock.classList.add('lock');
+
+  titleElement.classList.add('alert-title');
+  titleElement.innerHTML = data.alert_title;
+
+  textElement.innerHTML = data.alert_message;
+
+  button.setAttribute('aria-label', 'remove alert');
+  button.addEventListener('click', () => {
+    wrapper.style.height = `${wrapper.offsetHeight}px`;
+    window.localStorage.setItem(ALERT_ID_REF, data.alert_id);
+
+    setTimeout(() => {
+      wrapper.style.height = '0px';
+    }, 100);
+
+    setTimeout(() => {
+      wrapper.remove();
+    }, ANIMATION_IN_SPEED + 100);
+  });
+
+  lock.appendChild(button);
+  lock.appendChild(titleElement);
+  lock.appendChild(textElement);
+
+  wrapper.appendChild(lock);
+
+  return wrapper;
 };
 
 export default class UtilityHeaderElement extends HTMLElement {
@@ -535,7 +750,7 @@ export default class UtilityHeaderElement extends HTMLElement {
     }
 
     if (name === 'size' && newValue) {
-      const width = 'full' ? '100%' : newValue;
+      const width = newValue === 'full' ? '100%' : newValue;
       this.sizeContainer({ width });
     }
 
@@ -641,15 +856,16 @@ export default class UtilityHeaderElement extends HTMLElement {
     this._menuContainerElement.setAttribute('id', MOBILE_MENU_ID);
     this._menuContainerElement.setAttribute(
       'aria-hidden',
-      (!isDesktop).toString(),
+      (!isDesktop()).toString(),
     );
 
     this._containerElement.appendChild(this._logoElement);
-    this._containerElement.appendChild(this._menuContainerElement);
     this._containerElement.appendChild(mobileButton);
+    this._containerElement.appendChild(this._menuContainerElement);
     this._shadow.appendChild(this._containerElement);
 
     this.searchSubmit();
+    this.alert();
 
     window.addEventListener('resize', () => {
       this.resizeEvent({ menu: this._menuContainerElement });
@@ -658,7 +874,7 @@ export default class UtilityHeaderElement extends HTMLElement {
 
   resizeEvent({ menu }: { menu: HTMLDivElement }) {
     if (menu) {
-      menu.setAttribute('aria-hidden', (!isDesktop).toString());
+      menu.setAttribute('aria-hidden', (!isDesktop()).toString());
     }
   }
 
@@ -667,7 +883,7 @@ export default class UtilityHeaderElement extends HTMLElement {
   }
 
   sizeContainer({ width }: { width: string }) {
-    this._containerElement.style.maxWidth = `${width}px`;
+    this._containerElement.style.maxWidth = `${width}`;
   }
 
   searchSubmit() {
@@ -721,9 +937,61 @@ export default class UtilityHeaderElement extends HTMLElement {
       this._menuContainerElement.appendChild(this._formElement);
     }
   }
+
+  async alert() {
+    const shouldCheck = checkAlertTime();
+
+    const setMarkup = (data: AlertDataType) => {
+      const domAlert = makeAlert(data);
+      const styleNode = this._shadow.querySelector('style') as HTMLStyleElement;
+      const containerNode = styleNode.nextElementSibling;
+
+      if (shouldAlertHide({ alert_id: data.alert_id })) return;
+
+      if (containerNode) {
+        this._shadow.insertBefore(domAlert, containerNode);
+      } else {
+        this._shadow.appendChild(domAlert);
+      }
+    };
+
+    const fetchAlerts = async () => {
+      try {
+        const params: {
+          method: 'GET';
+          headers: {
+            'Content-Type': string;
+          };
+          body?: string;
+        } = {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        };
+
+        const response = await fetch(ALERTS_URL, params);
+        return response.json();
+      } catch (ex) {
+        throw ex;
+      }
+    };
+
+    if (shouldCheck) {
+      const { data = [] } = await fetchAlerts();
+
+      if (data.length > 0) {
+        setMarkup(data[0]);
+        setAlertStorage(data[0]);
+      }
+    } else {
+      const data = getAlertStorage();
+      if (data) {
+        setMarkup(JSON.parse(data));
+      }
+    }
+  }
 }
 
-if (!window.customElements.get('umd-utility-header')) {
+if (!window.customElements.get(ELEMENT_NAME)) {
   window.UtilityHeaderElement = UtilityHeaderElement;
-  window.customElements.define('umd-utility-header', UtilityHeaderElement);
+  window.customElements.define(ELEMENT_NAME, UtilityHeaderElement);
 }
