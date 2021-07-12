@@ -25,8 +25,13 @@ const ELEMENT_NAME = 'umd-utility-header';
 // const ALERTS_URL = 'https://umd.edu/api/alerts';
 const ALERTS_URL = 'https://umd.it-dev-lamp.aws.umd.edu/api/alerts';
 const SEARCH_URL = 'https://search.umd.edu';
-const MOBILE_MENU_ID = 'mobile-menu';
+const MOBILE_MENU_ID = 'umd-global-mobile-menu';
 const SEARCH_FORM_ID = 'umd-global-search';
+const ALERT_ELEMENT_ID = 'umd-global-alert';
+const LOCK_CLASS = `umd-global-header-lock`;
+const MOBILE_BUTTON_CLASS = `umd-global-header-mobile_button`;
+const LOGO_CLASS = 'umd-global-header-logo`';
+const SR_ONLY_CLASS = 'umd-global-sr-only';
 const ALERT_TIME_REF = 'umd-alert-time';
 const ALERT_REF = 'umd-alert';
 const ALERT_ID_REF = 'umd-alert-id';
@@ -38,38 +43,32 @@ template.innerHTML = `
   <style>
   
     :host {
-      display: block;
-      background-color: ${Colors.red};
-      position: relative;
+      display: block !important;
+      background-color: ${Colors.red} !important;
+      position: relative !important;
       z-index: 999;
     }
 
-    :host * {
-      padding: 0;
-      margin: 0;
-      box-sizing: border-box;
-    }
-
     :host p {
-      max-width: 800px;
-      margin: 0 auto;
+      max-width: 800px !important;
+      margin: 0 auto !important;
     }
 
     :host a {
       color: ${Colors.white} !important;
-      text-decoration: none;
-      text-transform: uppercase;
+      text-decoration: none !important;
+      text-transform: uppercase !important;
     }
 
     :host svg {
-      max-width: 15px;
-      transition: fill ${ANIMATION_OUT_SPEED}ms;
+      max-width: 15px !important;
+      transition: fill ${ANIMATION_OUT_SPEED}ms !important;
     }
 
     @media (max-width: ${Breakpoints.tabletMax}px) {
       :host svg {
         fill: ${Colors.red} !important;
-        transition: fill ${ANIMATION_IN_SPEED}ms;
+        transition: fill ${ANIMATION_IN_SPEED}ms !important;
       }
     }
 
@@ -80,49 +79,9 @@ template.innerHTML = `
     }
 
     :host button {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-    }
-
-    @media (max-width: ${Breakpoints.tabletMax}px) {
-      :host form {
-        padding: 20px 15px !important;
-        order: 1 !important;
-        display: block !important;
-      }
-    }
-
-    @media (min-width: ${Breakpoints.desktopMin}px) {
-      :host form {
-        position: absolute !important;
-        top: 48px !important;
-        right: 0 !important;
-        background-color: ${Colors.white} !important;
-        min-width: 420px !important;
-        height: 0;
-        overflow: hidden !important;
-        transition: height ${ANIMATION_OUT_SPEED}ms !important;
-        justify-content: flex-end !important;
-      }
-
-      :host form[aria-hidden="true"] {
-        transition: height ${ANIMATION_OUT_SPEED}ms;
-      }
-
-      :host form[aria-hidden="false"] {
-        transition: height ${ANIMATION_IN_SPEED}ms;
-      }
-    }
-
-    :host form > div {
-      display: flex;
-    }
-
-    @media (min-width: ${Breakpoints.desktopMin}px) {
-      :host form > div {
-        padding: 10px;
-      }
+      background: transparent !important;
+      border: none !important;
+      cursor: pointer !important;
     }
 
     :host input[type="text"] {
@@ -154,7 +113,50 @@ template.innerHTML = `
       transition: background ${ANIMATION_IN_SPEED}ms;
     }
 
-    :host .sr-only {
+    :host form#${SEARCH_FORM_ID} {
+      margin: 0;
+    }
+
+    @media (max-width: ${Breakpoints.tabletMax}px) {
+      :host form#${SEARCH_FORM_ID} {
+        padding: 20px 15px;
+        order: 1;
+        display: block !important;
+      }
+    }
+
+    @media (min-width: ${Breakpoints.desktopMin}px) {
+      :host form#${SEARCH_FORM_ID} {
+        position: absolute;
+        top: 48px;
+        right: 0;
+        background-color: ${Colors.white} !important;
+        min-width: 420px;
+        height: 0;
+        overflow: hidden;
+        transition: height ${ANIMATION_OUT_SPEED}ms;
+      }
+
+      :host form#${SEARCH_FORM_ID}[aria-hidden="true"] {
+        transition: height ${ANIMATION_OUT_SPEED}ms;
+      }
+
+      :host form#${SEARCH_FORM_ID}[aria-hidden="false"] {
+        transition: height ${ANIMATION_IN_SPEED}ms;
+      }
+    }
+
+    :host form#${SEARCH_FORM_ID} > div {
+      display: flex;
+    }
+
+    @media (min-width: ${Breakpoints.desktopMin}px) {
+      :host form#${SEARCH_FORM_ID} > div {
+        padding: 10px;
+      }
+    }
+
+    :host .${SR_ONLY_CLASS} {
       position: absolute;
       width: 1px;
       height: 1px;
@@ -165,136 +167,135 @@ template.innerHTML = `
       border: 0;
     }
 
-    :host .lock {
-      margin: 0 auto !important;
-      display: flex !important;
-      align-items: center !important;
-      position: relative !important;
+    :host .${LOCK_CLASS} {
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      position: relative;
     }
 
     @media (min-width: ${Breakpoints.desktopMin}px) {
-      :host .lock {
-        min-width: 960px !important;
+      :host .${LOCK_CLASS} {
+        min-width: 960px;
       }
     }
 
-    :host .mobile-button {
+    :host .${MOBILE_BUTTON_CLASS} {
       margin-left: auto;
     }
 
     @media (min-width: ${Breakpoints.desktopMin}px) {
-      :host .mobile-button  {
+      :host .${MOBILE_BUTTON_CLASS} {
         display: none !important;
       }
     }
 
-    :host .mobile-button:hover,
-    :host .mobile-button:focus {
+    :host .${MOBILE_BUTTON_CLASS}:hover,
+    :host .${MOBILE_BUTTON_CLASS}:focus {
       background-color: ${Colors.redDark} !important;
     }
 
     @media (max-width: ${Breakpoints.tabletMax}px) {
-      :host .menu {
-        position: absolute !important;
-        width: 100% !important;
-        left: 0 !important;
-        top: 39px !important;
-        box-shadow: 0 5px 5px 1px rgba(0, 0, 0, .2) !important;
+      :host #${MOBILE_MENU_ID} {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        top: 39px;
+        box-shadow: 0 5px 5px 1px rgba(0, 0, 0, .2);
         height: 0;
-        overflow: hidden !important;
-        transition: height ${ANIMATION_OUT_SPEED}ms !important;
+        overflow: hidden;
+        transition: height ${ANIMATION_OUT_SPEED}ms;
         display: flex;
-        flex-direction: column !important;
-        background-color: ${Colors.white};
+        flex-direction: column;
+        background-color: ${Colors.white} !important;
       }
 
-      :host .menu[aria-hidden="true"] {
-        transition: height ${ANIMATION_OUT_SPEED}ms !important;
+      :host #${MOBILE_MENU_ID}[aria-hidden="true"] {
+        transition: height ${ANIMATION_OUT_SPEED}ms;
         display: none;
       }
 
-      :host .menu[aria-hidden="false"] {
-        transition: height ${ANIMATION_IN_SPEED}ms !important;
+      :host #${MOBILE_MENU_ID}[aria-hidden="false"] {
+        transition: height ${ANIMATION_IN_SPEED}ms;
       }
     }
 
     @media (min-width: ${Breakpoints.desktopMin}px) {
-      :host .menu {
+      :host #${MOBILE_MENU_ID} {
         display: flex !important;
-        margin-left: auto !important;
         height: inherit !important;
-        display: flex !important;
-        position: relative !important;
+        margin-left: auto;
+        position: relative;
       }
     }
 
-    :host .menu > a,
+    :host #${MOBILE_MENU_ID} > a,
     :host button {
-      display: flex !important;
-      align-items: center !important;
-      padding: 10px 15px !important;
-      background-color: transparent !important;
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      background-color: transparent;
     }
 
     @media (max-width: ${Breakpoints.tabletMax}px) {
-      :host .menu > a {
+      :host #${MOBILE_MENU_ID} > a {
         border-top: 1px solid ${Colors.grayLight};
         color: ${Colors.red} !important;
         order: 2;
         transition: background ${ANIMATION_OUT_SPEED}ms, color ${ANIMATION_OUT_SPEED}ms;
       }
 
-      :host .menu > a:first-of-type {
+      :host #${MOBILE_MENU_ID} > a:first-of-type {
         border-top: none;
       }
     }
 
     @media (max-width: ${Breakpoints.tabletMax}px) {
-      :host .menu > a:hover,
-      :host .menu > a:focus {
+      :host #${MOBILE_MENU_ID} > a:hover,
+      :host #${MOBILE_MENU_ID} > a:focus {
         background-color: ${Colors.red} !important;
         color: ${Colors.white} !important;
         transition: background ${ANIMATION_IN_SPEED}ms, color ${ANIMATION_IN_SPEED}ms;
       }
 
-      :host .menu > a:hover svg,
-      :host .menu > a:focus svg {
+      :host #${MOBILE_MENU_ID} > a:hover svg,
+      :host #${MOBILE_MENU_ID} > a:focus svg {
         fill: ${Colors.white} !important;
       }
     }
 
     @media (min-width: ${Breakpoints.desktopMin}px) {
-      :host .menu > *,
-      :host .lock > button {
+      :host #${MOBILE_MENU_ID} > *,
+      :host #${MOBILE_MENU_ID} > button {
         transition: background ${ANIMATION_OUT_SPEED}ms;
       }
     }
 
     @media (min-width: ${Breakpoints.desktopMin}px) {
-      :host .menu > *:not(form):hover, 
-      :host .menu > *:not(form):focus {
+      :host #${MOBILE_MENU_ID} > *:not(form):hover, 
+      :host #${MOBILE_MENU_ID} > *:not(form):focus {
         background-color: ${Colors.redDark} !important;
         transition: background ${ANIMATION_IN_SPEED}ms;
       }
     }
 
-    :host .menu > * > span {
+    :host #${MOBILE_MENU_ID} > * > span {
       margin-left: 10px;
     }
 
-    :host .menu a {
+    :host #${MOBILE_MENU_ID} a {
       font-weight: 700;
       font-size: 13px;
       font-family: Source Sans,Source Sans Pro,sans-serif;
     }
 
     @media (max-width: ${Breakpoints.tabletMax}px) {
-      :host .menu button {
+      :host #${MOBILE_MENU_ID} button {
         display: none !important;
       }
     }
 
-    :host .logo {
+    :host .${LOGO_CLASS} {
       font-size: 14px;
       font-family: Crimson Text, Georgia, serif;
       letter-spacing: 1px;
@@ -302,94 +303,91 @@ template.innerHTML = `
     }
 
     @media (max-width: ${Breakpoints.tabletMax}px) {
-      :host .mobile-button svg {
+      :host .${MOBILE_BUTTON_CLASS} svg {
         fill: ${Colors.white} !important;
         max-width: 20px;
       }
     }
 
     @media (min-width: ${Breakpoints.desktopMin}px) {
-      :host .lock .mobile-button {
+      :host .${LOCK_CLASS} .${MOBILE_BUTTON_CLASS} {
         display: none;
       }
     }
 
-    :host #umd-alert {
-      text-align: center !important;
+    :host #${ALERT_ELEMENT_ID} {
+      text-align: center;
       background-color: ${Colors.grayLight} !important;
       transition: height ${ANIMATION_IN_SPEED}ms;
       overflow: hidden;
       position: relative;
     }
 
-    :host #umd-alert[data-type="general"] {
+    :host #${ALERT_ELEMENT_ID}[data-type="general"] {
       background-color: ${Colors.grayLight} !important;
     }
 
-    :host #umd-alert[data-type="open"] {
-      background-color: ${Colors.yellow}!important;
+    :host #${ALERT_ELEMENT_ID}[data-type="open"] {
+      background-color: ${Colors.yellow} !important;
     }
 
-    :host #umd-alert[data-type="closed"] {
+    :host #${ALERT_ELEMENT_ID}[data-type="closed"] {
       background-color:  ${Colors.green} !important;
     }
 
-    :host #umd-alert a {
-      text-transform: uppercase;
+    :host #${ALERT_ELEMENT_ID} a {
       color: currentColor !important;
       text-transform: inherit !important;
-      text-decoration: underline;
+      text-decoration: underline !important;
     }
 
-    :host #umd-alert .lock {
-      display: block !important;
-      padding: 10px !important;
+    :host #${ALERT_ELEMENT_ID} .${LOCK_CLASS} {
+      display: block ;
+      padding: 10px;
     }
 
     @media (max-width: ${Breakpoints.largeMobileMax}px) {
-      :host #umd-alert .lock {
-        padding-top: 40px !important;
+      :host #${ALERT_ELEMENT_ID} .${LOCK_CLASS} {
+        padding-top: 40px;
       }
     }
 
-    :host #umd-alert .alert-title {
+    :host #${ALERT_ELEMENT_ID} .alert-title {
       text-transform: uppercase;
       margin-bottom: 15px;
       font-weight: 700;
     }
 
-    :host #umd-alert button {
+    :host #${ALERT_ELEMENT_ID} button {
       position: absolute;
       top: 10px;
       right: 10px;
     }
 
     @media (max-width: ${Breakpoints.largeMobileMax}px) {
-      :host #umd-alert button {
+      :host #${ALERT_ELEMENT_ID} button {
         top: 5px;
         right: 5px;
       }
     }
 
-    :host #umd-alert button:before,
-    :host #umd-alert button:after {
-      content: '' !important;
-      display: inline-block !important;
-      width: 2px !important;
-      height: 20px !important;
-      background-color: ${Colors.gray} !important;
+    :host #${ALERT_ELEMENT_ID} button:before,
+    :host #${ALERT_ELEMENT_ID} button:after {
+      content: '';
+      display: inline-block;
+      width: 2px;
+      height: 20px;
+      background-color: ${Colors.gray};
     }
 
-    :host #umd-alert button:before {
-      transform: rotate(135deg) translateX(-1px) !important;
+    :host #${ALERT_ELEMENT_ID} button:before {
+      transform: rotate(135deg) translateX(-1px);
     }
 
-    :host #umd-alert button:after {
-        transform: rotate(45deg) translateX(-1px) !important;
+    :host #${ALERT_ELEMENT_ID} button:after {
+      transform: rotate(45deg) translateX(-1px);
     }
-
   }
-
   </style>
 `;
 const makeLinkElement = ({ name, icon, url, }) => {
@@ -485,7 +483,7 @@ const makeMobileMenuButton = ({ expandElement, }) => {
     button.setAttribute('type', 'button');
     button.setAttribute('aria-label', 'toggle mobile menu');
     button.setAttribute('aria-controls', MOBILE_MENU_ID);
-    button.classList.add('mobile-button');
+    button.classList.add(MOBILE_BUTTON_CLASS);
     button.addEventListener('click', () => {
         toggleExpandElements({ expandElement, elements, button });
     });
@@ -509,7 +507,7 @@ const makeLogoElement = () => {
     logo.setAttribute('href', 'https://umd.edu');
     logo.setAttribute('target', '_blank');
     logo.setAttribute('rel', 'noopener noreferrer');
-    logo.classList.add('logo');
+    logo.classList.add(LOGO_CLASS);
     return logo;
 };
 const makeFormElement = () => {
@@ -565,8 +563,8 @@ const makeAlert = (data) => {
     const textElement = document.createElement('div');
     const button = document.createElement('button');
     wrapper.setAttribute('data-type', data.alert_type);
-    wrapper.setAttribute('id', 'umd-alert');
-    lock.classList.add('lock');
+    wrapper.setAttribute('id', ALERT_ELEMENT_ID);
+    lock.classList.add(LOCK_CLASS);
     titleElement.classList.add('alert-title');
     titleElement.innerHTML = data.alert_title;
     textElement.innerHTML = data.alert_message;
@@ -706,8 +704,7 @@ export default class UtilityHeaderElement extends HTMLElement {
         const mobileButton = makeMobileMenuButton({
             expandElement: this._menuContainerElement,
         });
-        this._containerElement.classList.add('lock');
-        this._menuContainerElement.classList.add('menu');
+        this._containerElement.classList.add(LOCK_CLASS);
         this._menuContainerElement.setAttribute('id', MOBILE_MENU_ID);
         this._menuContainerElement.setAttribute('aria-hidden', (!isDesktop()).toString());
         this._containerElement.appendChild(this._logoElement);
@@ -749,7 +746,7 @@ export default class UtilityHeaderElement extends HTMLElement {
     addMenuItems() {
         const items = this._menuElements.sort((a, b) => a.order > b.order ? 1 : -1);
         const setPadding = ({ element }) => {
-            const mobileButton = this._shadow.querySelector('.mobile-button');
+            const mobileButton = this._shadow.querySelector(MOBILE_BUTTON_CLASS);
             const padding = parseInt(this._paddingAmount);
             const elementPadding = padding > 20 ? 20 : padding;
             element.style.paddingRight = `${elementPadding}px`;
