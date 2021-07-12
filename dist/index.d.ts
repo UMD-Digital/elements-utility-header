@@ -25,8 +25,9 @@ export default class UtilityHeaderElement extends HTMLElement {
     static get observedAttributes(): string[];
     attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
     connectedCallback(): void;
-    resizeEvent({ menu }: {
+    resizeEvent({ menu, form }: {
         menu: HTMLDivElement;
+        form: HTMLFormElement;
     }): void;
     paddingContainer({ padding }: {
         padding: string;

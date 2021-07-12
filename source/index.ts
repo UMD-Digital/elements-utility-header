@@ -45,7 +45,7 @@ const SEARCH_FORM_ID = 'umd-global-search';
 const ALERT_ELEMENT_ID = 'umd-global-alert';
 const LOCK_CLASS = `umd-global-header-lock`;
 const MOBILE_BUTTON_CLASS = `umd-global-header-mobile_button`;
-const LOGO_CLASS = 'umd-global-header-logo`';
+const LOGO_CLASS = 'umd-global-header-logo';
 const SR_ONLY_CLASS = 'umd-global-sr-only';
 const ALERT_TIME_REF = 'umd-alert-time';
 const ALERT_REF = 'umd-alert';
@@ -66,6 +66,10 @@ template.innerHTML = `
       background-color: ${Colors.red} !important;
       position: relative !important;
       z-index: 999;
+    }
+
+    :host * {
+      box-sizing: border-box;
     }
 
     :host p {
@@ -141,6 +145,7 @@ template.innerHTML = `
         padding: 20px 15px;
         order: 1;
         display: block !important;
+        height: auto !important;
       }
     }
 
@@ -865,13 +870,17 @@ export default class UtilityHeaderElement extends HTMLElement {
     this.alert();
 
     window.addEventListener('resize', () => {
-      this.resizeEvent({ menu: this._menuContainerElement });
+      this.resizeEvent({
+        menu: this._menuContainerElement,
+        form: this._formElement,
+      });
     });
   }
 
-  resizeEvent({ menu }: { menu: HTMLDivElement }) {
+  resizeEvent({ menu, form }: { menu: HTMLDivElement; form: HTMLFormElement }) {
     if (menu) {
       menu.setAttribute('aria-hidden', (!isDesktop()).toString());
+      form.setAttribute('aria-hidden', isDesktop().toString());
     }
   }
 
