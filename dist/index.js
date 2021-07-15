@@ -1,10 +1,10 @@
-const flagIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="29" height="28" viewBox="0 0 29 28"><title>Flag</title><path d="M5 4c0 .72-.39 1.36-1 1.72V25.5c0 .266-.234.5-.5.5h-1c-.266 0-.5-.234-.5-.5V5.72c-.61-.36-1-1-1-1.72 0-1.11.89-2 2-2s2 .89 2 2zm23 1v11.922c0 .578-.36.797-.812 1.03-1.766.954-3.72 1.814-5.766 1.814-2.875 0-4.25-2.188-7.656-2.188-2.484 0-5.094 1.125-7.25 2.28-.172.095-.328.142-.516.142-.547 0-1-.453-1-1V7.406c0-.375.187-.64.484-.86.375-.25.828-.468 1.234-.67 1.97-1 4.36-1.876 6.578-1.876 2.453 0 4.375.812 6.547 1.828.438.22.89.297 1.375.297C23.67 6.125 26.312 4 26.998 4c.548 0 1 .453 1 1z"></path></svg>`;
-const homeIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28"><title>School</title><path d="M22 15.5V23c0 .547-.453 1-1 1h-6v-6h-4v6H5c-.547 0-1-.453-1-1v-7.5c0-.03.016-.063.016-.094L13 8l8.984 7.406c.016.03.016.063.016.094zm3.484-1.078l-.97 1.156c-.077.094-.202.156-.327.172h-.047c-.125 0-.234-.03-.328-.11L13 6.626 2.185 15.64c-.11.08-.234.126-.375.11-.124-.016-.25-.078-.327-.172l-.97-1.156c-.17-.203-.14-.53.064-.703L11.81 4.36c.657-.547 1.72-.547 2.376 0L18 7.547V4.5c0-.28.218-.5.5-.5h3c.28 0 .5.22.5.5v6.375l3.42 2.844c.204.17.235.5.064.702z"></path></svg>`;
-const starIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28"><title>Star</title><path d="M26 10.11c0 .28-.203.546-.406.75l-5.672 5.53 1.344 7.812c.016.11.016.203.016.313 0 .406-.187.78-.64.78-.22 0-.44-.077-.626-.186L13 21.42 5.984 25.11c-.203.108-.406.186-.625.186-.454 0-.657-.375-.657-.78 0-.11.016-.204.03-.314L6.08 16.39.39 10.86c-.187-.204-.39-.47-.39-.75 0-.47.483-.657.874-.72l7.844-1.14 3.516-7.11c.14-.297.406-.64.766-.64s.625.343.766.64l3.516 7.11 7.844 1.14c.375.063.875.25.875.72z"></path></svg>`;
-const calendarIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28"><title>Calendar</title><path d="M2 26h22V10H2v16zM8 7V2.5c0-.28-.22-.5-.5-.5h-1c-.28 0-.5.22-.5.5V7c0 .28.22.5.5.5h1c.28 0 .5-.22.5-.5zm12 0V2.5c0-.28-.22-.5-.5-.5h-1c-.28 0-.5.22-.5.5V7c0 .28.22.5.5.5h1c.28 0 .5-.22.5-.5zm6-1v20c0 1.094-.906 2-2 2H2c-1.094 0-2-.906-2-2V6c0-1.094.906-2 2-2h2V2.5C4 1.125 5.125 0 6.5 0h1C8.875 0 10 1.125 10 2.5V4h6V2.5C16 1.125 17.125 0 18.5 0h1C20.875 0 22 1.125 22 2.5V4h2c1.094 0 2 .906 2 2z"></path></svg>`;
-const mIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 35 28"><title>Gift</title><path d="M16 1.4C7.937 1.4 1.4 7.937 1.4 16S7.937 30.6 16 30.6c8.063 0 14.6-6.537 14.6-14.6S24.063 1.4 16 1.4zm3.38 22.66v-2.55h2L21 13l-4.68 8.36h-.38L11.11 13l-.27 8.55h2v2.55H6.08v-2.55H8l.45-11.5H6.42V7.5h4.54l5.16 9.19 5-9.27h4.51v2.55h-2.04l.61 11.49h2v2.55z"></path></svg>`;
-const searchIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28"><title>Search</title><path d="M18 13c0-3.86-3.14-7-7-7s-7 3.14-7 7 3.14 7 7 7 7-3.14 7-7zm8 13c0 1.094-.906 2-2 2-.53 0-1.047-.22-1.406-.594l-5.36-5.344C15.408 23.328 13.22 24 11.002 24 4.924 24 0 19.076 0 13S4.924 2 11 2s11 4.92 11 11c0 2.218-.67 4.405-1.936 6.233l5.36 5.36c.358.358.577.874.577 1.405z"></path></svg>`;
-const chevronIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 28 28"><title>Menu</title><path d="M26.297 12.625L14.703 24.203c-.39.39-1.016.39-1.406 0L1.703 12.625c-.39-.39-.39-1.03 0-1.422l2.594-2.578c.39-.39 1.016-.39 1.406 0L14 16.922l8.297-8.297c.39-.39 1.016-.39 1.406 0l2.594 2.578c.39.39.39 1.03 0 1.422z"></path></svg>`;
+const flagIcon = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="29" height="28" viewBox="0 0 29 28"><title>Flag</title><path d="M5 4c0 .72-.39 1.36-1 1.72V25.5c0 .266-.234.5-.5.5h-1c-.266 0-.5-.234-.5-.5V5.72c-.61-.36-1-1-1-1.72 0-1.11.89-2 2-2s2 .89 2 2zm23 1v11.922c0 .578-.36.797-.812 1.03-1.766.954-3.72 1.814-5.766 1.814-2.875 0-4.25-2.188-7.656-2.188-2.484 0-5.094 1.125-7.25 2.28-.172.095-.328.142-.516.142-.547 0-1-.453-1-1V7.406c0-.375.187-.64.484-.86.375-.25.828-.468 1.234-.67 1.97-1 4.36-1.876 6.578-1.876 2.453 0 4.375.812 6.547 1.828.438.22.89.297 1.375.297C23.67 6.125 26.312 4 26.998 4c.548 0 1 .453 1 1z"></path></svg>`;
+const homeIcon = `<svg aria-hidden="true"  xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28"><title>School</title><path d="M22 15.5V23c0 .547-.453 1-1 1h-6v-6h-4v6H5c-.547 0-1-.453-1-1v-7.5c0-.03.016-.063.016-.094L13 8l8.984 7.406c.016.03.016.063.016.094zm3.484-1.078l-.97 1.156c-.077.094-.202.156-.327.172h-.047c-.125 0-.234-.03-.328-.11L13 6.626 2.185 15.64c-.11.08-.234.126-.375.11-.124-.016-.25-.078-.327-.172l-.97-1.156c-.17-.203-.14-.53.064-.703L11.81 4.36c.657-.547 1.72-.547 2.376 0L18 7.547V4.5c0-.28.218-.5.5-.5h3c.28 0 .5.22.5.5v6.375l3.42 2.844c.204.17.235.5.064.702z"></path></svg>`;
+const starIcon = `<svg aria-hidden="true"  xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28"><title>Star</title><path d="M26 10.11c0 .28-.203.546-.406.75l-5.672 5.53 1.344 7.812c.016.11.016.203.016.313 0 .406-.187.78-.64.78-.22 0-.44-.077-.626-.186L13 21.42 5.984 25.11c-.203.108-.406.186-.625.186-.454 0-.657-.375-.657-.78 0-.11.016-.204.03-.314L6.08 16.39.39 10.86c-.187-.204-.39-.47-.39-.75 0-.47.483-.657.874-.72l7.844-1.14 3.516-7.11c.14-.297.406-.64.766-.64s.625.343.766.64l3.516 7.11 7.844 1.14c.375.063.875.25.875.72z"></path></svg>`;
+const calendarIcon = `<svg aria-hidden="true"  xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28"><title>Calendar</title><path d="M2 26h22V10H2v16zM8 7V2.5c0-.28-.22-.5-.5-.5h-1c-.28 0-.5.22-.5.5V7c0 .28.22.5.5.5h1c.28 0 .5-.22.5-.5zm12 0V2.5c0-.28-.22-.5-.5-.5h-1c-.28 0-.5.22-.5.5V7c0 .28.22.5.5.5h1c.28 0 .5-.22.5-.5zm6-1v20c0 1.094-.906 2-2 2H2c-1.094 0-2-.906-2-2V6c0-1.094.906-2 2-2h2V2.5C4 1.125 5.125 0 6.5 0h1C8.875 0 10 1.125 10 2.5V4h6V2.5C16 1.125 17.125 0 18.5 0h1C20.875 0 22 1.125 22 2.5V4h2c1.094 0 2 .906 2 2z"></path></svg>`;
+const mIcon = `<svg aria-hidden="true"  xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 35 28"><title>Gift</title><path d="M16 1.4C7.937 1.4 1.4 7.937 1.4 16S7.937 30.6 16 30.6c8.063 0 14.6-6.537 14.6-14.6S24.063 1.4 16 1.4zm3.38 22.66v-2.55h2L21 13l-4.68 8.36h-.38L11.11 13l-.27 8.55h2v2.55H6.08v-2.55H8l.45-11.5H6.42V7.5h4.54l5.16 9.19 5-9.27h4.51v2.55h-2.04l.61 11.49h2v2.55z"></path></svg>`;
+const searchIcon = `<svg aria-hidden="true"  xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28"><title>Search</title><path d="M18 13c0-3.86-3.14-7-7-7s-7 3.14-7 7 3.14 7 7 7 7-3.14 7-7zm8 13c0 1.094-.906 2-2 2-.53 0-1.047-.22-1.406-.594l-5.36-5.344C15.408 23.328 13.22 24 11.002 24 4.924 24 0 19.076 0 13S4.924 2 11 2s11 4.92 11 11c0 2.218-.67 4.405-1.936 6.233l5.36 5.36c.358.358.577.874.577 1.405z"></path></svg>`;
+const chevronIcon = `<svg aria-hidden="true"  xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 28 28"><title>Menu</title><path d="M26.297 12.625L14.703 24.203c-.39.39-1.016.39-1.406 0L1.703 12.625c-.39-.39-.39-1.03 0-1.422l2.594-2.578c.39-.39 1.016-.39 1.406 0L14 16.922l8.297-8.297c.39-.39 1.016-.39 1.406 0l2.594 2.578c.39.39.39 1.03 0 1.422z"></path></svg>`;
 const Colors = {
     white: '#fff',
     offWhite: '#f1f1f1',
@@ -50,70 +50,71 @@ template.innerHTML = `
     }
 
     :host * {
+      -webkit-box-sizing: border-box;
       box-sizing: border-box;
     }
 
     :host p {
-      max-width: 800px !important;
-      margin: 0 auto !important;
+      max-width: 800px;
+      margin: 0 auto;
     }
 
     :host a {
-      color: ${Colors.white} !important;
-      text-decoration: none !important;
-      text-transform: uppercase !important;
+      color: ${Colors.white};
+      text-decoration: none;
+      text-transform: uppercase;
     }
 
     :host svg {
-      max-width: 15px !important;
-      transition: fill ${ANIMATION_OUT_SPEED}ms !important;
+      max-width: 15px;
+      transition: fill ${ANIMATION_OUT_SPEED}ms;
     }
 
     @media (max-width: ${Breakpoints.tabletMax}px) {
       :host svg {
-        fill: ${Colors.red} !important;
-        transition: fill ${ANIMATION_IN_SPEED}ms !important;
+        fill: ${Colors.red};
+        transition: fill ${ANIMATION_IN_SPEED}ms;
       }
     }
 
     @media (min-width: ${Breakpoints.desktopMin}px) {
       :host svg {
-        fill: ${Colors.white} !important;
+        fill: ${Colors.white};
       }
     }
 
     :host button {
-      background: transparent !important;
-      border: none !important;
-      cursor: pointer !important;
+      background: transparent;
+      border: none;
+      cursor: pointer;
     }
 
     :host input[type="text"] {
-      width: calc(100% - 120px) !important;
-      display: block !important;
-      padding: 0 10px !important;
-      height: 44px !important;
-      font-family: Source Sans,Source Sans Pro,sans-serif !important;
-      font-size: 13px !important;
-      line-height: 1.3 !important;
-      border: 1px solid #ccc !important;
+      width: calc(100% - 120px);
+      display: block;
+      padding: 0 10px;
+      height: 44px;
+      font-family: Source Sans,Source Sans Pro,sans-serif;
+      font-size: 13px;
+      line-height: 1.3;
+      border: 1px solid #ccc;
     }
 
     :host input[type="submit"] {
-      border: none !important;
-      background-color: ${Colors.red} !important;
-      color: ${Colors.white} !important;
-      font-weight: 700 !important;
-      font-size: 12px !important;
-      transition: background ${ANIMATION_OUT_SPEED}ms !important;
-      padding: 15px 30px !important;
-      min-width: 120px !important;
-      height: 44px !important;
+      border: none;
+      background-color: ${Colors.red};
+      color: ${Colors.white};
+      font-weight: 700;
+      font-size: 12px;
+      transition: background ${ANIMATION_OUT_SPEED}ms;
+      padding: 15px 30px;
+      min-width: 120px;
+      height: 44px;
     }
 
     :host input[type="submit"]:hover,
     :host input[type="submit"]:focus {
-      background-color: ${Colors.redDark} !important;
+      background-color: ${Colors.redDark};
       transition: background ${ANIMATION_IN_SPEED}ms;
     }
 
@@ -124,6 +125,8 @@ template.innerHTML = `
     @media (max-width: ${Breakpoints.tabletMax}px) {
       :host form#${SEARCH_FORM_ID} {
         padding: 20px 15px;
+        -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
         order: 1;
         display: block !important;
         height: auto !important;
@@ -135,7 +138,7 @@ template.innerHTML = `
         position: absolute;
         top: 48px;
         right: 0;
-        background-color: ${Colors.white} !important;
+        background-color: ${Colors.white};
         min-width: 420px;
         height: 0;
         overflow: hidden;
@@ -152,6 +155,8 @@ template.innerHTML = `
     }
 
     :host form#${SEARCH_FORM_ID} > div {
+      display: -webkit-box;
+      display: -ms-flexbox;
       display: flex;
     }
 
@@ -174,7 +179,11 @@ template.innerHTML = `
 
     :host .${LOCK_CLASS} {
       margin: 0 auto;
+      display: -webkit-box;
+      display: -ms-flexbox;
       display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
       align-items: center;
       position: relative;
     }
@@ -197,7 +206,7 @@ template.innerHTML = `
 
     :host .${MOBILE_BUTTON_CLASS}:hover,
     :host .${MOBILE_BUTTON_CLASS}:focus {
-      background-color: ${Colors.redDark} !important;
+      background-color: ${Colors.redDark};
     }
 
     @media (max-width: ${Breakpoints.tabletMax}px) {
@@ -210,9 +219,14 @@ template.innerHTML = `
         height: 0;
         overflow: hidden;
         transition: height ${ANIMATION_OUT_SPEED}ms;
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
         flex-direction: column;
-        background-color: ${Colors.white} !important;
+        background-color: ${Colors.white};
       }
 
       :host #${MOBILE_MENU_ID}[aria-hidden="true"] {
@@ -227,6 +241,8 @@ template.innerHTML = `
 
     @media (min-width: ${Breakpoints.desktopMin}px) {
       :host #${MOBILE_MENU_ID} {
+        display: -webkit-box !important;
+        display: -ms-flexbox !important;
         display: flex !important;
         height: inherit !important;
         margin-left: auto;
@@ -236,7 +252,11 @@ template.innerHTML = `
 
     :host #${MOBILE_MENU_ID} > a,
     :host button {
+      display: -webkit-box;
+      display: -ms-flexbox;
       display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
       align-items: center;
       padding: 10px 15px;
       background-color: transparent;
@@ -245,7 +265,9 @@ template.innerHTML = `
     @media (max-width: ${Breakpoints.tabletMax}px) {
       :host #${MOBILE_MENU_ID} > a {
         border-top: 1px solid ${Colors.grayLight};
-        color: ${Colors.red} !important;
+        color: ${Colors.red};
+        -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
         order: 2;
         transition: background ${ANIMATION_OUT_SPEED}ms, color ${ANIMATION_OUT_SPEED}ms;
       }
@@ -258,14 +280,14 @@ template.innerHTML = `
     @media (max-width: ${Breakpoints.tabletMax}px) {
       :host #${MOBILE_MENU_ID} > a:hover,
       :host #${MOBILE_MENU_ID} > a:focus {
-        background-color: ${Colors.red} !important;
-        color: ${Colors.white} !important;
+        background-color: ${Colors.red};
+        color: ${Colors.white};
         transition: background ${ANIMATION_IN_SPEED}ms, color ${ANIMATION_IN_SPEED}ms;
       }
 
       :host #${MOBILE_MENU_ID} > a:hover svg,
       :host #${MOBILE_MENU_ID} > a:focus svg {
-        fill: ${Colors.white} !important;
+        fill: ${Colors.white};
       }
     }
 
@@ -279,7 +301,7 @@ template.innerHTML = `
     @media (min-width: ${Breakpoints.desktopMin}px) {
       :host #${MOBILE_MENU_ID} > *:not(form):hover, 
       :host #${MOBILE_MENU_ID} > *:not(form):focus {
-        background-color: ${Colors.redDark} !important;
+        background-color: ${Colors.redDark};
         transition: background ${ANIMATION_IN_SPEED}ms;
       }
     }
@@ -309,7 +331,7 @@ template.innerHTML = `
 
     @media (max-width: ${Breakpoints.tabletMax}px) {
       :host .${MOBILE_BUTTON_CLASS} svg {
-        fill: ${Colors.white} !important;
+        fill: ${Colors.white};
         max-width: 20px;
       }
     }
@@ -322,28 +344,28 @@ template.innerHTML = `
 
     :host #${ALERT_ELEMENT_ID} {
       text-align: center;
-      background-color: ${Colors.grayLight} !important;
+      background-color: ${Colors.grayLight};
       transition: height ${ANIMATION_IN_SPEED}ms;
       overflow: hidden;
       position: relative;
     }
 
     :host #${ALERT_ELEMENT_ID}[data-type="general"] {
-      background-color: ${Colors.grayLight} !important;
+      background-color: ${Colors.grayLight};
     }
 
     :host #${ALERT_ELEMENT_ID}[data-type="open"] {
-      background-color: ${Colors.yellow} !important;
+      background-color: ${Colors.yellow};
     }
 
     :host #${ALERT_ELEMENT_ID}[data-type="closed"] {
-      background-color:  ${Colors.green} !important;
+      background-color:  ${Colors.green};
     }
 
     :host #${ALERT_ELEMENT_ID} a {
-      color: currentColor !important;
-      text-transform: inherit !important;
-      text-decoration: underline !important;
+      color: currentColor;
+      text-transform: inherit;
+      text-decoration: underline;
     }
 
     :host #${ALERT_ELEMENT_ID} .${LOCK_CLASS} {
@@ -392,7 +414,7 @@ template.innerHTML = `
     :host #${ALERT_ELEMENT_ID} button:after {
       transform: rotate(45deg) translateX(-1px);
     }
-  }
+  
   </style>
 `;
 const makeLinkElement = ({ name, icon, url, }) => {
@@ -521,8 +543,9 @@ const makeFormElement = () => {
     const inputTextLabel = document.createElement('label');
     const inputText = document.createElement('input');
     const inputSubmit = document.createElement('input');
+    inputTextLabel.innerHTML = 'Search input';
     inputTextLabel.setAttribute('for', 'input-text');
-    inputTextLabel.classList.add('sr-only');
+    inputTextLabel.classList.add(SR_ONLY_CLASS);
     inputText.setAttribute('type', 'text');
     inputText.setAttribute('id', 'input-text');
     inputText.setAttribute('name', 'query');
