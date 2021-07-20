@@ -3,7 +3,7 @@
 ## Installation
 
 ```
-$ yarn add @umd/utilityheader
+$ yarn add @universityofmaryland/utilityheader
 ```
 
 ## Basic Usage
@@ -11,7 +11,7 @@ $ yarn add @umd/utilityheader
 #### Import the utility header in your js if you bundle using a transpile with babel or typescript.
 
 ```js
-import '@umd/utilityheader';
+import '@universityofmaryland/utilityheader';
 ```
 
 #### HTML usage

@@ -1,5 +1,5 @@
 {
-  "name": "@umd/utilityheader",
+  "name": "@universityofmaryland/utilityheader",
   "version": "0.0.1",
   "description": "Utility Header element",
   "main": "dist/index.js",
