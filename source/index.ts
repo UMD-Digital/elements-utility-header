@@ -37,8 +37,7 @@ const Breakpoints = {
 };
 
 const ELEMENT_NAME = 'umd-utility-header';
-// const ALERTS_URL = 'https://umd.edu/api/alerts';
-const ALERTS_URL = 'https://umd.it-dev-lamp.aws.umd.edu/api/alerts';
+const ALERTS_URL = 'https://umd.edu/api/alerts';
 const SEARCH_URL = 'https://search.umd.edu';
 const MOBILE_MENU_ID = 'umd-global-mobile-menu';
 const SEARCH_FORM_ID = 'umd-global-search';
