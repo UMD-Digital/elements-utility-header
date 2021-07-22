@@ -416,6 +416,15 @@ template.innerHTML = `
   
   </style>
 `;
+const isValidUrl = (url) => {
+    try {
+        new URL(url);
+    }
+    catch (e) {
+        return false;
+    }
+    return true;
+};
 const makeLinkElement = ({ name, icon, url, }) => {
     const tag = document.createElement('a');
     tag.setAttribute('href', url);
@@ -702,9 +711,16 @@ export default class UtilityHeaderElement extends HTMLElement {
         }
         if (name === 'gift' && !this._isGiftSet) {
             this._isGiftSet = true;
+            const getURL = () => {
+                const defaultURL = 'https://giving.umd.edu/giving';
+                if (!newValue)
+                    return defaultURL;
+                const validURL = newValue ? isValidUrl(newValue) : null;
+                return validURL ? newValue : defaultURL;
+            };
             const element = makeLinkElement({
                 name: 'Make a Gift',
-                url: 'https://giving.umd.edu/giving',
+                url: getURL(),
                 icon: mIcon,
             });
             this._menuElements.push({
