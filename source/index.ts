@@ -870,38 +870,62 @@ export default class UtilityHeaderElement extends HTMLElement {
   }
 
   connectedCallback() {
-    this.addMenuItems();
-
-    const mobileButton = makeMobileMenuButton({
-      expandElement: this._menuContainerElement,
-    });
+    const containsMenuItems = this._menuElements.length > 0;
+    const resizeElements: any = {};
 
     this._containerElement.classList.add(LOCK_CLASS);
-    this._menuContainerElement.setAttribute('id', MOBILE_MENU_ID);
-    this._menuContainerElement.setAttribute(
-      'aria-hidden',
-      (!isDesktop()).toString(),
-    );
-
     this._containerElement.appendChild(this._logoElement);
-    this._containerElement.appendChild(mobileButton);
-    this._containerElement.appendChild(this._menuContainerElement);
-    this._shadow.appendChild(this._containerElement);
 
-    this.searchSubmit();
-    this.alert();
+    if (containsMenuItems) {
+      this.addMenuItems();
 
-    window.addEventListener('resize', () => {
-      this.resizeEvent({
-        menu: this._menuContainerElement,
-        form: this._formElement,
+      this._containerElement.appendChild(
+        makeMobileMenuButton({
+          expandElement: this._menuContainerElement,
+        }),
+      );
+
+      this._menuContainerElement.setAttribute('id', MOBILE_MENU_ID);
+      this._menuContainerElement.setAttribute(
+        'aria-hidden',
+        (!isDesktop()).toString(),
+      );
+
+      this._containerElement.appendChild(this._menuContainerElement);
+
+      resizeElements['menu'] = this._menuContainerElement;
+    } else {
+      this._containerElement.style.display = 'flex';
+      this._containerElement.style.justifyContent = 'center';
+    }
+
+    if (this._isSearchSet) {
+      resizeElements['form'] = this._formElement;
+      this.searchSubmit();
+    }
+
+    if (Object.keys(resizeElements).length > 0) {
+      window.addEventListener('resize', () => {
+        this.resizeEvent(resizeElements);
       });
-    });
+    }
+
+    this.alert();
+    this._shadow.appendChild(this._containerElement);
   }
 
-  resizeEvent({ menu, form }: { menu: HTMLDivElement; form: HTMLFormElement }) {
+  resizeEvent({
+    menu,
+    form,
+  }: {
+    menu?: HTMLDivElement;
+    form?: HTMLFormElement;
+  }) {
     if (menu) {
       menu.setAttribute('aria-hidden', (!isDesktop()).toString());
+    }
+
+    if (form) {
       form.setAttribute('aria-hidden', isDesktop().toString());
     }
   }

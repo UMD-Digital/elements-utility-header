@@ -1,6 +1,6 @@
 {
   "name": "@universityofmaryland/utilityheader",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Utility Header element",
   "main": "dist/index.js",
   "module": "dist/index.js",
