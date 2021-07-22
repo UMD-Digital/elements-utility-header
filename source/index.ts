@@ -391,7 +391,7 @@ template.innerHTML = `
       padding: 10px;
     }
 
-    @media (max-width: ${Breakpoints.largeMobileMax}px) {
+    @media (max-width: ${Breakpoints.tabletMax}px) {
       :host #${ALERT_ELEMENT_ID} .${LOCK_CLASS} {
         padding-top: 40px;
       }
