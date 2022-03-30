@@ -1051,6 +1051,13 @@ export default class UtilityHeaderElement extends HTMLElement {
       if (data.length > 0) {
         setMarkup(data[0]);
         setAlertStorage(data[0]);
+      } else {
+        const alertElement = this._shadow.querySelector(`#${ALERT_ELEMENT_ID}`);
+
+        if (alertElement) {
+          alertElement.remove();
+          window.localStorage.removeItem(ALERT_REF);
+        }
       }
     } else {
       const data = getAlertStorage();
