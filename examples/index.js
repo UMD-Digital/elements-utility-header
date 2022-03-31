@@ -119,6 +119,7 @@ template.innerHTML = `
 
     :host form#${SEARCH_FORM_ID} {
       margin: 0;
+      display: none;
     }
 
     @media (max-width: ${Breakpoints.tabletMax}px) {
