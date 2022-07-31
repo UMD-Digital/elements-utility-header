@@ -1050,14 +1050,18 @@ export default class UtilityHeaderElement extends HTMLElement {
       const { data = [] } = await fetchAlerts();
 
       if (data.length > 0) {
+        if (data[0] == '') return;
+
         setMarkup(data[0]);
         setAlertStorage(data[0]);
       } else {
         const alertElement = this._shadow.querySelector(`#${ALERT_ELEMENT_ID}`);
 
+        window.localStorage.setItem(ALERT_REF, '');
+        window.localStorage.removeItem(ALERT_REF);
+
         if (alertElement) {
           alertElement.remove();
-          window.localStorage.removeItem(ALERT_REF);
         }
       }
     } else {
