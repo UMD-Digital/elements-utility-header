@@ -21,6 +21,7 @@ export default class UtilityHeaderElement extends HTMLElement {
     _isSchoolsSet: boolean;
     _isAdmissionsSet: boolean;
     _isGiftSet: boolean;
+    _alertUrl: string;
     constructor();
     static get observedAttributes(): string[];
     attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;

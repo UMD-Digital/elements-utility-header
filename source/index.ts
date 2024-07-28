@@ -754,6 +754,8 @@ export default class UtilityHeaderElement extends HTMLElement {
   _isAdmissionsSet = false;
   _isGiftSet = false;
 
+  _alertUrl = ALERTS_URL;
+
   constructor() {
     super();
 
@@ -771,6 +773,7 @@ export default class UtilityHeaderElement extends HTMLElement {
       'schools',
       'admissions',
       'gift',
+      'alert-url',
     ];
   }
 
@@ -885,6 +888,10 @@ export default class UtilityHeaderElement extends HTMLElement {
         order: 6,
         element: button,
       });
+    }
+
+    if (name === 'alert-url') {
+      this._alertUrl = newValue || ALERTS_URL;
     }
   }
 
@@ -1039,7 +1046,11 @@ export default class UtilityHeaderElement extends HTMLElement {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         };
 
-        const response = await fetch(ALERTS_URL, params);
+        console.log(this._alertUrl);
+
+        const response = await fetch(this._alertUrl, params);
+
+        console.log(response);
         return response.json();
       } catch (ex) {
         throw ex;

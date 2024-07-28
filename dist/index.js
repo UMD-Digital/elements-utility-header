@@ -638,6 +638,7 @@ export default class UtilityHeaderElement extends HTMLElement {
         this._isSchoolsSet = false;
         this._isAdmissionsSet = false;
         this._isGiftSet = false;
+        this._alertUrl = ALERTS_URL;
         this._shadow = this.attachShadow({ mode: 'open' });
         this._shadow.appendChild(template.content.cloneNode(true));
     }
@@ -651,6 +652,7 @@ export default class UtilityHeaderElement extends HTMLElement {
             'schools',
             'admissions',
             'gift',
+            'alert-url',
         ];
     }
     attributeChangedCallback(name, oldValue, newValue) {
@@ -741,6 +743,9 @@ export default class UtilityHeaderElement extends HTMLElement {
                 order: 6,
                 element: button,
             });
+        }
+        if (name === 'alert-url') {
+            this._alertUrl = newValue || ALERTS_URL;
         }
     }
     connectedCallback() {
@@ -846,7 +851,9 @@ export default class UtilityHeaderElement extends HTMLElement {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 };
-                const response = await fetch(ALERTS_URL, params);
+                console.log(this._alertUrl);
+                const response = await fetch(this._alertUrl, params);
+                console.log(response);
                 return response.json();
             }
             catch (ex) {

@@ -1,0 +1,21 @@
+{
+  "data": [
+    {
+      "alert_id": "162-1722178584",
+      "alert_title": "University is open ",
+      "alert_message": "\u003Cp\u003EThe University of Maryland, College Park is open on time, Tuesday, January 15, 2019.\u003C/p\u003E\n",
+      "alert_type": "open"
+    },
+    {
+      "alert_id": "507-1722178656",
+      "alert_title": "The University of Maryland is Closed Tuesday, January 16, 2024",
+      "alert_message": "\u003Cp\u003EUPDATE: The University of Maryland, College Park is closed Tuesday, January 16, 2024, due to inclement weather. No classes will meet in person, and only weather-essential employees report. Answers to FAQs, including how classes move virtual: umd.edu/weather\u003C/p\u003E\n",
+      "alert_type": "closed"
+    }
+  ],
+  "count": 2,
+  "self": {
+    "title": "Self",
+    "href": "https://umd.it-dev-lamp.aws.umd.edu/api/v1.0/alerts"
+  }
+}
